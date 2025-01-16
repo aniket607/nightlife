@@ -9,7 +9,7 @@ interface VenueCardProps {
 
 export function VenueCard({ name, description, rating, imageUrl }: VenueCardProps) {
   return (
-    <div className="relative rounded-2xl overflow-hidden bg-[#1a1a1a] group transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+    <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-white/[0.15] to-black/30 backdrop-blur-xl border border-white/[0.15] group transform transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
       {/* Image container */}
       <div className="relative h-[350px] w-full overflow-hidden">
         <Image 
@@ -20,12 +20,12 @@ export function VenueCard({ name, description, rating, imageUrl }: VenueCardProp
           className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
           priority
         />
-        {/* Complex gradient overlay for smooth fade */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#1a1a1a]/60 to-[#1a1a1a]" />
+        {/*gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black/90" />
       </div>
 
       {/* Content with background */}
-      <div className="relative bg-[#141414] px-6 pb-6 -mt-20">
+      <div className="relative bg-gradient-to-b from-black/60 to-white/[0.05] backdrop-blur-md px-6 pb-6 -mt-20">
         <h3 className="text-2xl font-bold mb-3 pt-3 text-white group-hover:text-purple-400 transition-colors">
           {name}
         </h3>
@@ -38,7 +38,7 @@ export function VenueCard({ name, description, rating, imageUrl }: VenueCardProp
           </div>
         </div>
 
-        <button className="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300">
+        <button className="w-full bg-black/40 hover:bg-black/60 border border-white/10 backdrop-blur-md text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95">
           Join Guestlist
         </button>
       </div>
