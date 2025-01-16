@@ -1,6 +1,7 @@
 import { VenueCard } from "@/components/venue-card"
 import { Waves } from "@/components/ui/waves-background"
 import { ExploreButton } from "@/components/ui/explore-button"
+import { EventCard } from "@/components/event-card"
 
 const featuredVenues = [
   {
@@ -76,7 +77,7 @@ export default function Home() {
           <ExploreButton />
         </div>
       </div>
-
+        
       {/* Featured Venues Section */}
       <section id="featured-venues" className="relative py-24 px-6 bg-black">
         {/* Content */}
@@ -157,6 +158,64 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Featured Events Section */}
+      <section className="relative py-24 px-6 bg-black" >
+        <div className="relative max-w-7xl mx-auto " style={{ zIndex: 50 }}>
+          {/* Section Header */}
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white font-futura">Featured Events</h2>
+            <p className="text-xl text-[#b3b9c2] font-helvetica">Don&apos;t miss out on these exclusive parties :</p>
+          </div>
+
+          {/* Events Grid */}
+          <div className="grid grid-cols-1 gap-8">
+            <EventCard
+              title="New Year's Eve Spectacular"
+              description="Join us for the biggest party of the year featuring top DJs and spectacular shows. Experience an unforgettable night of music, dance, and celebration as we welcome the new year in style."
+              date="Dec 31, 2023"
+              time="10 PM - 4 AM"
+              venue="Club Enigma"
+              category="EDM Night"
+              imageUrl="https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736623375790-WhatsApp%20Image%202025-01-11%20at%2016.47.38.jpeg"
+              isFeatured={true}
+              availableSlots={101}
+            />
+            <EventCard
+              title="Christmas Eve Jazz Night"
+              description="An evening of smooth jazz and specialty cocktails in an intimate setting. Let the soulful melodies and festive spirits create the perfect holiday atmosphere."
+              date="Dec 24, 2023"
+              time="8 PM - 1 AM"
+              venue="Neon Lounge"
+              category="Live Music"
+              imageUrl="https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736873909475-HotredNight.jpg"
+              availableSlots={45}
+            />
+            <EventCard
+              title="Deep House Sessions"
+              description="Experience the best of underground house music with international DJs. Get ready for a night of deep beats and electronic vibes in the city's most exclusive venue."
+              date="Jan 7, 2024"
+              time="11 PM - 5 AM"
+              venue="Pulse"
+              category="House Music"
+              imageUrl="https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736799234896-SaturdayParty.jpg"
+              availableSlots={73}
+            />
+          </div>
+
+          {/* View All Events Button */}
+          <div className="text-center mt-16">
+            <a 
+              href="/events" 
+              className="inline-block border-2 border-white text-white hover:bg-white/70 hover:text-black px-8 py-4 rounded-2xl transition-all duration-500 ease-in-out text-lg font-semibold"
+            >
+              View All Events
+            </a>
+          </div>
+        </div>
+      </section>
+
+      
     </main>
   )
 }

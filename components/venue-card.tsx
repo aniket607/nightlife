@@ -27,7 +27,7 @@ export function VenueCard({ name, description, rating, imageUrl, venueArea }: Ve
 
       {/* Content with background */}
       <div className="relative bg-gradient-to-b from-black/60 to-white/[0.05] backdrop-blur-md px-6 pb-6 -mt-20">
-        <h3 className="text-2xl font-bold mb-3 pt-3 text-white group-hover:text-purple-400 transition-colors">
+        <h3 className="text-2xl font-bold mb-3 pt-3 text-white group-hover:text-white/80 transition-colors">
           {name}
         </h3>
         <p className="text-[#9ca3af] text-base mb-6">{description}</p>
