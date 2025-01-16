@@ -7,19 +7,22 @@ const featuredVenues = [
     name: "Notch Indore",
     description: "Premium nightclub featuring world-class DJs",
     rating: 4.1,
-    imageUrl: "https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736529631197-notch.jpg"
+    imageUrl: "https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736529631197-notch.jpg",
+    venueArea: "Vijay Nagar"
   },
   {
     name: "Dopamine",
     description: "Sophisticated cocktail bar with live music",
     rating: 4.2,
-    imageUrl: "https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736530138889-dopamine.jpg"
+    imageUrl: "https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736530138889-dopamine.jpg",
+    venueArea: "Vijay Nagar"
   },
   {
     name: " Kave - Sky.Sip.Dine",
     description: "Underground electronic music venue",
     rating: 3,
-    imageUrl: "https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736768662847-Kave.jpg"
+    imageUrl: "https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736768662847-Kave.jpg",
+    venueArea: "Bypass"
   }
 ]
 
@@ -94,10 +97,63 @@ export default function Home() {
           <div className="text-center mt-20">
             <a 
               href="/venues" 
-              className="inline-block border-2 border-white text-white hover:bg-white hover:text-[#ed6969] px-8 py-4 rounded-2xl transition-all duration-300 text-lg font-semibold"
+              className="inline-block border-2 border-white text-white hover:bg-white/70 hover:text-black px-8 py-4 rounded-2xl transition-all duration-500 ease-in-out text-lg font-semibold"
             >
               View All Venues
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="relative py-24 px-6 bg-black">
+        <div className="relative max-w-7xl mx-auto" style={{ zIndex: 50 }}>
+          {/* Section Header */}
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white font-futura">How It Works</h2>
+            <p className="text-xl text-[#b3b9c2] font-helvetica">Get on the guestlist in three simple steps:</p>
+          </div>
+          
+          {/* Steps Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+            {/* Step 1 */}
+            <div className="group flex flex-col items-center">
+              <div className="w-24 h-24 mb-8 bg-black/40 backdrop-blur-xl rounded-full flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] border border-white/30">
+                <div className="w-12 h-12 text-white/80">
+                  <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold font-helvetica text-white mb-4 text-center">Browse Venues</h3>
+              <p className="text-[#9ca3af] text-center text-lg">Explore our curated selection of premium clubs and bars in your area</p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="group flex flex-col items-center">
+              <div className="w-24 h-24 mb-8 bg-black/40 backdrop-blur-xl rounded-full flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] border border-white/30">
+                <div className="w-12 h-12 text-white/80">
+                  <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold font-helvetica text-white mb-4 text-center">Join Guestlist</h3>
+              <p className="text-[#9ca3af] text-center text-lg">Select your preferred Event and add your name to the guestlist</p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="group flex flex-col items-center">
+              <div className="w-24 h-24 mb-8 bg-black/40 backdrop-blur-xl rounded-full flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] border border-white/30">
+                <div className="w-12 h-12 text-white/80">
+                  <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold font-helvetica text-white mb-4 text-center">Enjoy VIP Entry</h3>
+              <p className="text-[#9ca3af] text-center text-lg">Skip the line and enjoy free entry at your chosen venue</p>
+            </div>
           </div>
         </div>
       </section>

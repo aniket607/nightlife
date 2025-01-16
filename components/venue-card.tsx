@@ -4,10 +4,11 @@ interface VenueCardProps {
   name: string
   description: string
   rating: number
-  imageUrl: string
+  imageUrl: string,
+  venueArea: string
 }
 
-export function VenueCard({ name, description, rating, imageUrl }: VenueCardProps) {
+export function VenueCard({ name, description, rating, imageUrl, venueArea }: VenueCardProps) {
   return (
     <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-white/[0.15] to-black/30 backdrop-blur-xl border border-white/[0.15] group transform transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
       {/* Image container */}
@@ -35,6 +36,13 @@ export function VenueCard({ name, description, rating, imageUrl }: VenueCardProp
           <div className="flex items-center gap-1.5">
             <span className="text-yellow-500 text-xl">★</span>
             <span className="text-white text-lg">{rating}/5</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span className="text-white text-sm">{venueArea}</span>
           </div>
         </div>
 
