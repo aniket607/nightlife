@@ -63,7 +63,7 @@ export function EventCard({
             <div className="text-lg text-white/80">{displayTime}</div>
           </div>
           <div className="flex items-center gap-2">
-            {stagGlCount && stagGlCount > 0 && (
+            {stagGlCount! > 0 && (
               <div className="flex items-center gap-1 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -71,7 +71,7 @@ export function EventCard({
                 <span className="text-sm">{stagGlCount}</span>
               </div>
             )}
-            {coupleGlCount && coupleGlCount > 0 && (
+            {coupleGlCount! > 0 && (
               <div className="flex items-center gap-1 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -96,7 +96,7 @@ export function EventCard({
 
         {/* Desktop Slots Counter */}
         <div className="hidden md:flex absolute top-4 right-4 z-50 flex-col gap-2">
-          {stagGlCount && stagGlCount > 0 && (
+          {stagGlCount! > 0 && (
             <div className="bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
               <div className="flex items-center gap-2 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,7 +106,7 @@ export function EventCard({
               </div>
             </div>
           )}
-          {coupleGlCount && coupleGlCount > 0 && (
+          {coupleGlCount! > 0 && (
             <div className="bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
               <div className="flex items-center gap-2 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
