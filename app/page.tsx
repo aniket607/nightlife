@@ -12,6 +12,19 @@ export default async function Home() {
     },
     take: 3
   })
+  const featuredEvents = await prisma.event.findMany({
+    where: {
+      featuredEvent: true
+    },
+    orderBy: {
+      eventDate: "asc", // Sort by eventDate in ascending order
+    },
+    include: {
+      venue: true
+    },
+    take: 3
+  })
+  console.log('Featured Events:', featuredEvents)
   return (
     <main className="relative overflow-x-hidden">
       {/* Background Waves*/}
@@ -153,38 +166,13 @@ export default async function Home() {
           </div>
 
           {/* Events Grid */}
-          <div className="grid grid-cols-1 gap-8">
-            <EventCard
-              title="New Year's Eve Spectacular"
-              description="Join us for the biggest party of the year featuring top DJs and spectacular shows. Experience an unforgettable night of music, dance, and celebration as we welcome the new year in style."
-              date="Dec 31, 2023"
-              time="10 PM - 4 AM"
-              venue="Club Enigma"
-              category="EDM Night"
-              imageUrl="https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736623375790-WhatsApp%20Image%202025-01-11%20at%2016.47.38.jpeg"
-              isFeatured={true}
-              availableSlots={101}
-            />
-            <EventCard
-              title="Christmas Eve Jazz Night"
-              description="An evening of smooth jazz and specialty cocktails in an intimate setting. Let the soulful melodies and festive spirits create the perfect holiday atmosphere."
-              date="Dec 24, 2023"
-              time="8 PM - 1 AM"
-              venue="Neon Lounge"
-              category="Live Music"
-              imageUrl="https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736873909475-HotredNight.jpg"
-              availableSlots={45}
-            />
-            <EventCard
-              title="Deep House Sessions"
-              description="Experience the best of underground house music with international DJs. Get ready for a night of deep beats and electronic vibes in the city's most exclusive venue."
-              date="Jan 7, 2024"
-              time="11 PM - 5 AM"
-              venue="Pulse"
-              category="House Music"
-              imageUrl="https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736799234896-SaturdayParty.jpg"
-              availableSlots={73}
-            />
+          <div className="grid grid-cols-1 gap-8 place-items-center">
+            {featuredEvents.map((event) => (
+              <div key={event.eventName} className="relative">
+                <EventCard {...event} />
+              </div>
+            ))}
+            
           </div>
 
           {/* View All Events Button */}
