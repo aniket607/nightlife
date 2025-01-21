@@ -3,28 +3,11 @@ import { Waves } from "@/components/ui/waves-background"
 import { ExploreButton } from "@/components/ui/explore-button"
 import { EventCard } from "@/components/event-card"
 import Link from "next/link"
-import prisma from "@/lib/prisma"
+import fetchFeatured from "@/actions/fetchFeatured"
 
 export default async function Home() {
-  const featuredVenues = await prisma.venue.findMany({
-    where: {
-      featuredVenue: true
-    },
-    take: 3
-  })
-  const featuredEvents = await prisma.event.findMany({
-    where: {
-      featuredEvent: true
-    },
-    orderBy: {
-      eventDate: "asc", // Sort by eventDate in ascending order
-    },
-    include: {
-      venue: true
-    },
-    take: 3
-  })
-  console.log('Featured Events:', featuredEvents)
+  const { featuredVenues, featuredEvents } = await fetchFeatured();
+
   return (
     <main className="relative overflow-x-hidden">
       {/* Background Waves*/}
