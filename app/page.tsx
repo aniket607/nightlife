@@ -3,32 +3,15 @@ import { Waves } from "@/components/ui/waves-background"
 import { ExploreButton } from "@/components/ui/explore-button"
 import { EventCard } from "@/components/event-card"
 import Link from "next/link"
+import prisma from "@/lib/prisma"
 
-const featuredVenues = [
-  {
-    name: "Notch Indore",
-    description: "Premium nightclub featuring world-class DJs",
-    rating: 4.1,
-    imageUrl: "https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736529631197-notch.jpg",
-    venueArea: "Vijay Nagar"
-  },
-  {
-    name: "Dopamine",
-    description: "Sophisticated cocktail bar with live music",
-    rating: 4.2,
-    imageUrl: "https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736530138889-dopamine.jpg",
-    venueArea: "Vijay Nagar"
-  },
-  {
-    name: " Kave - Sky.Sip.Dine",
-    description: "Underground electronic music venue",
-    rating: 3,
-    imageUrl: "https://aws-nightlife.s3.eu-north-1.amazonaws.com/1736768662847-Kave.jpg",
-    venueArea: "Bypass"
-  }
-]
-
-export default function Home() {
+export default async function Home() {
+  const featuredVenues = await prisma.venue.findMany({
+    where: {
+      featuredVenue: true
+    },
+    take: 3
+  })
   return (
     <main className="relative overflow-x-hidden">
       {/* Background Waves*/}
@@ -90,7 +73,7 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {featuredVenues.map((venue) => (
-              <div key={venue.name} className="relative">
+              <div key={venue.venueName} className="relative">
                 <VenueCard {...venue} />
               </div>
             ))}

@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  access        Boolean?  @default(false)
+  accounts      Account[]
+  sessions      Session[]
+  venues        Venue[]
+  events        Event[]   // Added this line
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Venue {
+  id          String    @id @default(cuid())
+  venueName   String  @unique
+  venueArea   String
+  rating      Float
+  address     String
+  locationUrl String?
+  userId      String
+  venueImgUrl String
+  featuredVenue    Boolean?  @default(false)
+  users       User    @relation(fields: [userId], references: [id])
+  events      Event[]
+}
+
+model Event {
+  eventId          Int        @id @default(autoincrement())
+  eventName        String
+  eventDescription String?
+  eventDate        DateTime
+  eventTime      DateTime @db.Time
+  stagGlCount          Int
+  coupleGl            Boolean
+  coupleGlCount        Int?
+  eventImgUrl      String?
+  eventType        String
+  venueId          String
+  userId           String 
+  featuredEvent   Boolean?  @default(false)    
+  createdAt      DateTime @default(now())
+  venue            Venue      @relation(fields: [venueId], references: [id])
+  user             User       @relation(fields: [userId], references: [id]) 
+  stagGuestlist        StagGuestlist[]
+  coupleGuestlist        CoupleGuestlist[]
+}
+
+model StagGuestlist {
+  glId        Int     @id @default(autoincrement())
+  guestName   String
+  guestAge    Int
+  guestMobile String
+  guestEmail  String
+  eventId     Int    
+  event       Event   @relation(fields: [eventId], references: [eventId])
+}
+
+model CoupleGuestlist {
+  glId          Int     @id @default(autoincrement())
+  maleName      String
+  femaleName    String
+  maleAge       Int
+  femaleAge     Int
+  maleMobile    String
+  femaleMobile  String
+  maleEmail     String
+  femaleEmail   String?
+  eventId       Int    
+  event         Event   @relation(fields: [eventId], references: [eventId])
+}

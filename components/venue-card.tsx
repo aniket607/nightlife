@@ -1,21 +1,21 @@
 import Image from "next/image"
 
 interface VenueCardProps {
-  name: string
-  description: string
+  venueName: string
+  address: string
   rating: number
-  imageUrl: string,
+  venueImgUrl: string,
   venueArea: string
 }
 
-export function VenueCard({ name, description, rating, imageUrl, venueArea }: VenueCardProps) {
+export function VenueCard({ venueName, address, rating, venueImgUrl, venueArea }: VenueCardProps) {
   return (
     <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-white/[0.15] to-black/30 backdrop-blur-xl border border-white/[0.15] group transform transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
       {/* Image container */}
       <div className="relative h-[350px] w-full overflow-hidden">
         <Image 
-          src={imageUrl} 
-          alt={name}
+          src={venueImgUrl} 
+          alt={venueName}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
@@ -28,9 +28,9 @@ export function VenueCard({ name, description, rating, imageUrl, venueArea }: Ve
       {/* Content with background */}
       <div className="relative bg-gradient-to-b from-black/60 to-white/[0.05] backdrop-blur-md px-6 pb-6 -mt-20">
         <h3 className="text-2xl font-bold mb-3 pt-3 text-white group-hover:text-white/80 transition-colors">
-          {name}
+          {venueName}
         </h3>
-        <p className="text-[#9ca3af] text-base mb-6">{description}</p>
+        <p className="text-[#9ca3af] text-base mb-6">{address}</p>
         
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-1.5">
