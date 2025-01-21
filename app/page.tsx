@@ -87,7 +87,7 @@ export default async function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section className="relative py-24 px-6 bg-black">
+      <section className="relative py-36 px-6 bg-black">
         <div className="relative max-w-7xl mx-auto" style={{ zIndex: 50 }}>
           {/* Section Header */}
           <div className="text-center mb-20">

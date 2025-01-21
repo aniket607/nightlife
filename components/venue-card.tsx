@@ -47,7 +47,7 @@ export function VenueCard({ venueName, address, rating, venueImgUrl, venueArea }
         </div>
 
         <button className="w-full bg-black/40 hover:bg-black/60 border border-white/10 backdrop-blur-md text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95">
-          Join Guestlist
+          View Events
         </button>
       </div>
     </div>
