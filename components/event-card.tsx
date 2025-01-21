@@ -84,7 +84,7 @@ export function EventCard({
       </div>
 
       {/* Main Card */}
-      <div className="relative w-full min-w-[280px] md:min-w-[1000px] max-w-7xl flex bg-gradient-to-r from-black/40 to-black/20 backdrop-blur-xl border border-white/10 rounded-none md:rounded-2xl rounded-b-2xl overflow-hidden group transform transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+      <div className="relative w-full min-w-[280px] md:min-w-[1000px] max-w-5xl flex bg-gradient-to-r from-black/40 to-black/20 backdrop-blur-xl border border-white/10 rounded-none md:rounded-2xl rounded-b-2xl overflow-hidden group transform transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
         {/* Desktop Date Display */}
         <div className="hidden md:flex items-center justify-center w-32 bg-black/60 text-center">
           <div className="text-white">
