@@ -8,7 +8,6 @@ interface EventCardProps {
   eventTime: string | Date | null
   venue: {
     venueName: string
-    // ... other venue fields if needed
   }
   eventType: string
   eventImgUrl: string | null
@@ -28,7 +27,7 @@ export function EventCard({
   stagGlCount = 101,
   coupleGlCount = 0
 }: EventCardProps) {
-  // Parse the date string to get month and day
+ 
   let month = '';
   let day = '';
   
@@ -118,7 +117,7 @@ export function EventCard({
           )}
         </div>
 
-        {/* Image container - smaller on mobile */}
+        {/* Image container */}
         <div className="relative min-w-[180px] md:min-w-[280px] h-[300px] md:h-[400px]">
           <Image 
             src={eventImgUrl || ""} 
