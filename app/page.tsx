@@ -265,7 +265,7 @@ export default async function Home() {
           {/* Copyright */}
           <div className="mt-12 pt-8 border-t border-white/10">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-[#9ca3af] text-sm">© 2024 NightLife. All rights reserved.</p>
+              <p className="text-[#9ca3af] text-sm">© 2025 NightLife. All rights reserved.</p>
               <div className="flex gap-6">
                 <Link href="/privacy" className="text-[#9ca3af] hover:text-white text-sm transition-colors">Privacy Policy</Link>
                 <Link href="/terms" className="text-[#9ca3af] hover:text-white text-sm transition-colors">Terms of Service</Link>
