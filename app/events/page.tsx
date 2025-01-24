@@ -22,14 +22,14 @@ export default async function EventsPage() {
           <h2 className="text-4xl font-bold mb-4 text-white">Discover Events</h2>
           <p className="text-xl text-[#9ca3af]">Discover the hottest events in your City</p>
         </div>
-        <div className="container mx-auto">
+        <div className="mx-auto">
           <div className="flex flex-col gap-10">
-            {events.map((event) => (
-              <div key={event.eventId} className="relative">
-                <EventCard {...event} />
-              </div>
-            ))}
-          </div>
+              {events.map((event) => (
+                <div key={event.eventId} className="relative">
+                  <EventCard {...event} />
+                </div>
+              ))}
+            </div>
         </div>
       </div>
     </div>
