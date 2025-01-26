@@ -11,7 +11,7 @@ interface EventsResult {
   upcomingEvents: EventWithVenue[];
   pastEvents: EventWithVenue[];
 }
-export default async function fetchEvents() {
+export default async function fetchAllEvents() {
     const now = new Date();
     const start = startOfDay(now);
     try {

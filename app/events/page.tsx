@@ -1,5 +1,5 @@
 import { StarsBackground } from "@/components/ui/stars-background";
-import fetchEvents from "@/actions/fetchEvents";
+import fetchAllEvents from "@/actions/fetchAllEvents";
 import { EventCard } from "@/components/event-card";
 import {
   Accordion,
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/accordion"
 
 export default async function EventsPage() {
-  const events = await fetchEvents()
+  const events = await fetchAllEvents()
   const {pastEvents, upcomingEvents} = events
 
   return (
