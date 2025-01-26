@@ -17,6 +17,9 @@ const InteractiveHoverButton = React.forwardRef<
     <button
       ref={ref}
       disabled={disabled}
+      onClick={() => {
+        console.log('Join Guest List');
+      }}
       className={cn(
         "group relative w-32 cursor-pointer overflow-hidden rounded-full border bg-background p-2 text-center font-semibold",
         disabled && "cursor-not-allowed opacity-50 hover:scale-100",

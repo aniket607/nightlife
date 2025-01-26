@@ -106,6 +106,7 @@ export function EventCard({
                 </svg>
                 <span className="text-sm font-medium">{stagGlCount} stag slots</span>
               </div>
+
             </div>
           )}
           {coupleGlCount! > 0 && (
@@ -171,3 +172,4 @@ export function EventCard({
     </>
   )
 }
+
