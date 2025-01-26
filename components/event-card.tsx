@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { cn } from "@/lib/utils";
 
 interface EventCardProps {
   eventName: string
@@ -14,6 +15,7 @@ interface EventCardProps {
   featuredEvent?: boolean | null
   stagGlCount?: number | null
   coupleGlCount?: number | null
+  isPastEvent?: boolean
 }
 
 export function EventCard({ 
@@ -25,7 +27,8 @@ export function EventCard({
   eventType,
   eventImgUrl,
   stagGlCount = 101,
-  coupleGlCount = 0
+  coupleGlCount = 0,
+  isPastEvent = false
 }: EventCardProps) {
  
   let month = '';
@@ -123,6 +126,7 @@ export function EventCard({
             src={eventImgUrl || ""} 
             alt={eventName} 
             fill 
+            sizes="(max-width: 768px) 150px, 280px"
             className="object-cover" 
             priority 
           />
@@ -154,8 +158,12 @@ export function EventCard({
           {/* Join Guest List Button */}
           <div className="mt-4 md:mt-8 flex justify-center">
             <InteractiveHoverButton 
-              text="Join Guest List" 
-              className="w-full md:w-auto min-w-[150px] bg-transparent px-6 md:px-10 py-3 md:py-4 border-white/10 text-white text-xs md:text-base "
+              text={isPastEvent ? "Event Ended" : "Join Guest List"}
+              disabled={isPastEvent}
+              className={cn(
+                "w-full md:w-auto min-w-[150px] bg-transparent px-6 md:px-10 py-3 md:py-4 border-white/10 text-white text-xs md:text-base",
+                isPastEvent && "opacity-50 cursor-not-allowed hover:scale-100"
+              )}
             />
           </div>
         </div>

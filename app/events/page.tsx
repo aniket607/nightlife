@@ -43,7 +43,7 @@ export default async function EventsPage() {
                 <div className="flex flex-col gap-10 pt-6">
                   {pastEvents.map((event) => (
                     <div key={event.eventId}>
-                      <EventCard {...event} />
+                      <EventCard {...event} isPastEvent={true} />
                     </div>
                   ))}
                 </div>
@@ -61,7 +61,7 @@ export default async function EventsPage() {
                 <div className="flex flex-col gap-10 pt-6">
                   {upcomingEvents.map((event) => (
                     <div key={event.eventId}>
-                      <EventCard {...event} />
+                      <EventCard {...event} isPastEvent={false} />
                     </div>
                   ))}
                 </div>
