@@ -118,7 +118,7 @@ export function EventCard({
         </div>
 
         {/* Image container */}
-        <div className="relative min-w-[180px] md:min-w-[280px] h-[300px] md:h-[400px]">
+        <div className="relative min-w-[150px] md:min-w-[280px] h-[250px] md:h-[400px]">
           <Image 
             src={eventImgUrl || ""} 
             alt={eventName} 
@@ -133,13 +133,13 @@ export function EventCard({
         <div className="flex flex-col justify-between px-4 py-2 md:p-8 flex-1">
           <div>
             {/* Category */}
-            <div className="mb-3 md:mb-4">
-              <span className="text-purple-400 text-sm font-medium">{eventType}</span>
+            <div className="mb-2 md:mb-4">
+              <span className="text-purple-400 text-sm font-normal">{eventType}</span>
             </div>
 
             {/* Title & Description */}
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-3">{eventName}</h3>
-            <p className="text-sm md:text-base text-[#9ca3af] mb-6 line-clamp-3">{eventDescription}</p>
+            <h3 className="text-lg md:text-2xl font-bold text-white mb-2">{eventName}</h3>
+            <p className="text-sm md:text-base text-[#9ca3af] mb-4 line-clamp-3">{eventDescription}</p>
 
             {/* Venue */}
             <div className="flex items-center gap-2">
@@ -155,7 +155,7 @@ export function EventCard({
           <div className="mt-4 md:mt-8 flex justify-center">
             <InteractiveHoverButton 
               text="Join Guest List" 
-              className="w-full md:w-auto min-w-[150px] bg-transparent px-6 md:px-10 py-3 md:py-4 border-white/10 text-white text-sm md:text-base font-medium hover:text-black hover:bg-white/80 transition-all ease-in-out  hover:scale-[1.02] active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+              className="w-full md:w-auto min-w-[150px] bg-transparent px-6 md:px-10 py-3 md:py-4 border-white/10 text-white text-xs md:text-base "
             />
           </div>
         </div>
