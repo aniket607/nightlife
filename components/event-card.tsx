@@ -68,7 +68,7 @@ export function EventCard({
             {stagGlCount! > 0 && (
               <div className="flex items-center gap-1 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <span className="text-sm">{stagGlCount}</span>
               </div>
@@ -86,7 +86,7 @@ export function EventCard({
       </div>
 
       {/* Main Card */}
-      <div className="relative w-full min-w-[280px] md:min-w-[850px] max-w-4xl flex bg-gradient-to-br from-slate-950/70 via-zinc-900 to-slate-950/60 backdrop-blur-xl border border-white/10 rounded-none md:rounded-2xl rounded-b-2xl overflow-hidden group transform transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+      <div className="relative w-full min-w-[280px] md:min-w-[800px] max-w-[800px] flex bg-gradient-to-br from-slate-950/70 via-zinc-900 to-slate-950/60 backdrop-blur-xl border border-white/10 rounded-none md:rounded-2xl rounded-b-2xl overflow-hidden group transform transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
         {/* Desktop Date Display */}
         <div className="hidden md:flex items-center justify-center w-32 bg-gradient-to-br  from-slate-950/80 via-zinc-900 to-slate-950/60 text-center">
           <div className="text-white">
@@ -97,25 +97,24 @@ export function EventCard({
         </div>
 
         {/* Desktop Slots Counter */}
-        <div className="hidden md:flex absolute top-4 right-4 z-50 flex-col gap-2">
+        <div className="hidden md:flex absolute top-2 right-2 z-50 flex-col gap-2">
           {stagGlCount! > 0 && (
             <div className="bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
               <div className="flex items-center gap-2 text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
-                <span className="text-sm font-medium">{stagGlCount} stag slots</span>
+                <span className="text-xs font-medium">{stagGlCount} stag slots</span>
               </div>
-
             </div>
           )}
           {coupleGlCount! > 0 && (
             <div className="bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
               <div className="flex items-center gap-2 text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
-                <span className="text-sm font-medium">{coupleGlCount} couple slots</span>
+                <span className="text-xs font-medium">{coupleGlCount} couple slots</span>
               </div>
             </div>
           )}
@@ -138,7 +137,7 @@ export function EventCard({
         <div className="flex flex-col justify-between px-4 py-2 md:p-8 flex-1">
           <div>
             {/* Category */}
-            <div className="mb-2 md:mb-4">
+            <div className="mb-2 md:my-4">
               <span className="text-purple-400 text-sm font-normal">{eventType}</span>
             </div>
 

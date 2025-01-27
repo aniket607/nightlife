@@ -32,14 +32,14 @@ export default async function EventsPage() {
           <p className="text-xl text-[#9ca3af]">Discover the hottest events in your City</p>
         </div>
 
-        <div className="w-full max-w-[1200px] mx-auto space-y-6 px-4">
+        <div className="w-full max-w-[950px] mx-auto space-y-6 px-4">
             {/* Past Events Accordion */}
             <Accordion type="single" collapsible className="w-full shadow shadow-gray-600/60 rounded-2xl">
             <AccordionItem value="past-events" className="border-white/50 rounded-2xl hover:border-white/70">
               <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
                 PAST EVENTS
               </AccordionTrigger>
-              <AccordionContent className="mx-2 md:mx-16">
+              <AccordionContent className="flex justify-center">
                 <div className="flex flex-col gap-10 pt-6">
                   {pastEvents.map((event) => (
                     <div key={event.eventId}>
@@ -57,7 +57,7 @@ export default async function EventsPage() {
               <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
                 UPCOMING EVENTS
               </AccordionTrigger>
-              <AccordionContent className="mx-2 md:mx-16">
+              <AccordionContent className="flex justify-center">
                 <div className="flex flex-col gap-10 pt-6">
                   {upcomingEvents.map((event) => (
                     <div key={event.eventId}>

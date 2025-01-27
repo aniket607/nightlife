@@ -19,7 +19,7 @@ export default async function VenuesPage() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 py-20 md:py-32 px-4">
+      <div className="relative z-10 py-20 md:py-32 px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 text-white">Discover Venues</h2>
           <p className="text-xl text-[#9ca3af]">Discover the hottest clubs and bars in your City</p>

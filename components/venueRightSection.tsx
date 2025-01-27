@@ -43,45 +43,54 @@ export function VenueRightSection({ eventsData }: VenueRightSectionProps) {
         }
         return acc;
       }, { upcomingEvents: [], pastEvents: [] } as EventsResult);
-      console.log(upcomingEvents)
-      console.log(pastEvents)
+
     return(
-        <div className="mx-auto">
+        <div className="w-full max-w-[900px] mx-auto space-y-6 px-4">
              {/* Past Events Accordion */}
-            <Accordion type="single" collapsible defaultValue="past-events" className="min-w-[800px] max-w-[800px] shadow shadow-gray-600/60 rounded-2xl">
+            <Accordion type="single" collapsible className="w-full shadow shadow-gray-600/60 rounded-2xl">
                 <AccordionItem value="past-events" className="border-white/50 rounded-2xl hover:border-white/70">
                 <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
                     PAST EVENTS
                 </AccordionTrigger>
-                <AccordionContent className="mx-2 md:mx-16">
+                <AccordionContent className="flex justify-center">
                     <div className="flex flex-col gap-10 pt-6">
-                            {pastEvents.map((pastEvent) => (
-                        <div key={pastEvent.eventId}>
-                        <EventCard {...pastEvent} isPastEvent={true} venue={{venueName: pastEvent.eventName}}/>
-                        </div>
+                        {pastEvents.map((pastEvent) => (
+                            <div key={pastEvent.eventId}>
+                                <EventCard {...pastEvent} isPastEvent={true} venue={{venueName: pastEvent.eventName}}/>
+                            </div>
                         ))}
+                        {pastEvents.length === 0 && (
+                            <div className="text-center text-white/80 font-bold font-helvetica">
+                                <p>No Past Events</p>
+                            </div>
+                        )}
                     </div>
                 </AccordionContent>
                 </AccordionItem>
-          </Accordion>
+            </Accordion>
             
-              {/* Upcoming Events Accordion */}
-          <Accordion type="single" collapsible defaultValue="upcoming-events" className="w-full shadow shadow-gray-600/70 rounded-2xl mt-10">
-            <AccordionItem value="upcoming-events" className="border-white/50 rounded-2xl hover:border-white/70">
-              <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
-                UPCOMING EVENTS
-              </AccordionTrigger>
-              <AccordionContent className="mx-2 md:mx-16">
-                <div className="flex flex-col gap-10 pt-6">
-                        {upcomingEvents.map((upcomingEvent) => (
-                    <div key={upcomingEvent.eventId}>
-                    <EventCard {...upcomingEvent} isPastEvent={false} venue={{venueName: upcomingEvent.eventName}}/>
-                    </div>
-                    ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+            {/* Upcoming Events Accordion */}
+            <Accordion type="single" collapsible defaultValue="upcoming-events" className="w-full shadow shadow-gray-600/70 rounded-2xl my-20">
+                <AccordionItem value="upcoming-events" className="border-white/50 rounded-2xl hover:border-white/70">
+                    <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
+                        UPCOMING EVENTS
+                    </AccordionTrigger>
+                    <AccordionContent className="flex justify-center">
+                        <div className="flex flex-col gap-10 pt-6">
+                            {upcomingEvents.map((upcomingEvent) => (
+                                <div key={upcomingEvent.eventId}>
+                                    <EventCard {...upcomingEvent} isPastEvent={false} venue={{venueName: upcomingEvent.eventName}}/>
+                                </div>
+                            ))}
+                            {upcomingEvents.length === 0 && (
+                                <div className="text-center text-white/80 font-bold font-helvetica">
+                                    <p>No Upcoming Events</p>
+                                </div>
+                            )}
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
+            </Accordion>
         </div>
     );
 }
