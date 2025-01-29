@@ -14,7 +14,7 @@ export function ExploreButton() {
   return (
     <RainbowButton 
       onClick={handleScroll} 
-      className="text-black bg-white relative cursor-pointer hover:scale-105 transition-all duration-300"
+      className="text-black relative cursor-pointer hover:scale-105 transition-all duration-300"
       style={{ zIndex: 9999 }}
     >
       Start Exploring

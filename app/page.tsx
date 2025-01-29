@@ -76,12 +76,12 @@ export default async function Home() {
           </div>
 
           <div className="text-center mt-20">
-            <a 
-              href="/venues" 
-              className="inline-block border-2 border-white text-white hover:bg-white/70 hover:text-black px-8 py-4 rounded-2xl transition-all duration-500 ease-in-out text-lg font-semibold"
-            >
-              View All Venues
-            </a>
+          <Link 
+            href="/venues" 
+            className="inline-block border-2 border-white text-white hover:bg-white/70 hover:text-black px-8 py-4 rounded-2xl transition-all duration-500 ease-in-out text-lg font-semibold"
+          >
+            View All Venues
+          </Link>
           </div>
         </div>
       </section>
