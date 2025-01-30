@@ -45,9 +45,9 @@ export function VenueRightSection({ eventsData }: VenueRightSectionProps) {
       }, { upcomingEvents: [], pastEvents: [] } as EventsResult);
 
     return(
-        <div className="w-full max-w-[900px] mx-auto space-y-6 px-4">
+        <div className="w-full max-w-[900px] mx-auto px-4">
              {/* Past Events Accordion */}
-            <Accordion type="single" collapsible className="w-full shadow shadow-gray-600/60 rounded-2xl">
+            <Accordion type="single" collapsible className="w-full shadow shadow-gray-600/60 rounded-2xl mb-6">
                 <AccordionItem value="past-events" className="border-white/50 rounded-2xl hover:border-white/70">
                 <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
                     PAST EVENTS
@@ -70,7 +70,7 @@ export function VenueRightSection({ eventsData }: VenueRightSectionProps) {
             </Accordion>
             
             {/* Upcoming Events Accordion */}
-            <Accordion type="single" collapsible defaultValue="upcoming-events" className="w-full shadow shadow-gray-600/70 rounded-2xl my-20">
+            <Accordion type="single" collapsible defaultValue="upcoming-events" className="w-full shadow shadow-gray-600/70 rounded-2xl mb-20">
                 <AccordionItem value="upcoming-events" className="border-white/50 rounded-2xl hover:border-white/70">
                     <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
                         UPCOMING EVENTS

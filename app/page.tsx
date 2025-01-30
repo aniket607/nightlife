@@ -9,10 +9,10 @@ export default async function Home() {
   const { featuredVenues, featuredEvents } = await fetchFeatured();
 
   return (
-    <main className="relative overflow-x-hidden">
+    <>
       {/* Background Waves*/}
       <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 1 }}>
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/30" style={{ zIndex: 2 }} />
         <Waves
           lineColor="rgba(255, 255, 255, 0.2)"
           backgroundColor="transparent"
@@ -59,14 +59,14 @@ export default async function Home() {
       </div>
         
       {/* Featured Venues Section */}
-      <section id="featured-venues" className="relative py-24 px-6 bg-black">
+      <section id="featured-venues" className="relative py-24 px-6" style={{ zIndex: 3 }}>
         {/* Content */}
-        <div className="relative max-w-7xl mx-auto" style={{ zIndex: 50 }}>
+        <div className="relative mx-auto max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-white">Featured Venues</h2>
             <p className="text-xl text-[#9ca3af]">Discover the hottest clubs and bars in your area</p>
           </div>
-          
+            
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {featuredVenues.map((venue) => (
               <div key={venue.venueName} className="relative">
@@ -87,14 +87,14 @@ export default async function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section className="relative py-36 px-6 bg-black">
-        <div className="relative max-w-7xl mx-auto" style={{ zIndex: 50 }}>
+      <section className="relative py-36 px-6" style={{ zIndex: 3 }}>
+        <div className="relative mx-auto max-w-7xl">
           {/* Section Header */}
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white font-futura">How It Works</h2>
             <p className="text-xl text-[#b3b9c2] font-helvetica">Get on the guestlist in three simple steps:</p>
           </div>
-          
+            
           {/* Steps Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             {/* Step 1 */}
@@ -140,8 +140,8 @@ export default async function Home() {
       </section>
 
       {/* Featured Events Section */}
-      <section className="relative py-24 px-6 bg-black" >
-        <div className="relative max-w-7xl mx-auto " style={{ zIndex: 50 }}>
+      <section className="relative py-24 px-6" style={{ zIndex: 3 }}>
+        <div className="relative mx-auto max-w-7xl">
           {/* Section Header */}
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white font-futura">Featured Events</h2>
@@ -171,11 +171,11 @@ export default async function Home() {
       </section>
 
       {/* Footer Section */}
-      <footer className="relative py-16 px-6">
+      <footer className="relative py-16 px-6" style={{ zIndex: 3 }}>
         {/* Glass Effect Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/80 backdrop-blur-xl" style={{ zIndex: 1 }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/80 backdrop-blur-sm" />
         
-        <div className="relative max-w-7xl mx-auto" style={{ zIndex: 2 }}>
+        <div className="relative mx-auto max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             {/* Brand Section */}
             <div className="space-y-4">
@@ -265,7 +265,7 @@ export default async function Home() {
           {/* Copyright */}
           <div className="mt-12 pt-8 border-t border-white/10">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-[#9ca3af] text-sm">© 2025 NightLife. All rights reserved.</p>
+              <p className="text-[#9ca3af] text-sm"> 2025 NightLife. All rights reserved.</p>
               <div className="flex gap-6">
                 <Link href="/privacy" className="text-[#9ca3af] hover:text-white text-sm transition-colors">Privacy Policy</Link>
                 <Link href="/terms" className="text-[#9ca3af] hover:text-white text-sm transition-colors">Terms of Service</Link>
@@ -275,6 +275,6 @@ export default async function Home() {
           </div>
         </div>
       </footer>
-    </main>
+    </>
   )
 }

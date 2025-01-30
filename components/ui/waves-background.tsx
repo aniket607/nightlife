@@ -273,16 +273,21 @@ export function Waves({
     }
 
     function onTouchMove(e: TouchEvent) {
-      e.preventDefault()
       const touch = e.touches[0]
-      updateMouse(touch.clientX, touch.clientY)
+      if (!touch) return
+      const rect = containerRef.current?.getBoundingClientRect()
+      if (!rect) return
+      updateMouse(
+        touch.clientX,
+        touch.clientY + window.scrollY - rect.top
+      )
     }
 
     function updateMouse(x: number, y: number) {
       const mouse = mouseRef.current
       const b = boundingRef.current
       mouse.x = x - b.left
-      mouse.y = y - b.top + window.scrollY
+      mouse.y = y
       if (!mouse.set) {
         mouse.sx = mouse.x
         mouse.sy = mouse.y
@@ -298,7 +303,7 @@ export function Waves({
 
     window.addEventListener("resize", onResize)
     window.addEventListener("mousemove", onMouseMove)
-    window.addEventListener("touchmove", onTouchMove, { passive: false })
+    window.addEventListener("touchmove", onTouchMove, { passive: true })
 
     return () => {
       window.removeEventListener("resize", onResize)
@@ -324,24 +329,24 @@ export function Waves({
       ref={containerRef}
       style={{
         backgroundColor,
+        position: 'absolute',
+        inset: 0,
+        overflow: 'hidden',
+        pointerEvents: 'none',
+        zIndex: 1
       }}
-      className={cn(
-        "absolute top-0 left-0 w-full h-full overflow-hidden",
-        className
-      )}
+      className={cn(className)}
     >
-      <div
-        className={cn(
-          "absolute top-0 left-0 rounded-full",
-          "w-2 h-2 bg-foreground/10"
-        )}
+      <canvas 
+        ref={canvasRef} 
         style={{
-          transform:
-            "translate3d(calc(var(--x) - 50%), calc(var(--y) - 50%), 0)",
-          willChange: "transform",
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          width: '100%',
+          height: '100%'
         }}
       />
-      <canvas ref={canvasRef} className="block w-full h-full" />
     </div>
   )
 }
