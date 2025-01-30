@@ -25,14 +25,15 @@ interface Event {
 }
 
 interface VenueRightSectionProps {
-    eventsData: Event[];
+    eventsData: Event[],
+    venue: string
 }
 interface EventsResult {
     upcomingEvents: Event[];
     pastEvents: Event[];
   }
 
-export function VenueRightSection({ eventsData }: VenueRightSectionProps) {
+export function VenueRightSection({ eventsData, venue }: VenueRightSectionProps) {
     const now = new Date();
     const start = startOfDay(now);
     const { upcomingEvents, pastEvents } = eventsData.reduce<EventsResult>((acc, event) => {
@@ -56,7 +57,7 @@ export function VenueRightSection({ eventsData }: VenueRightSectionProps) {
                     <div className="flex flex-col gap-10 pt-6">
                         {pastEvents.map((pastEvent) => (
                             <div key={pastEvent.eventId}>
-                                <EventCard {...pastEvent} isPastEvent={true} venue={{venueName: pastEvent.eventName}}/>
+                                <EventCard {...pastEvent} isPastEvent={true} venue={{venueName: venue}}/>
                             </div>
                         ))}
                         {pastEvents.length === 0 && (
@@ -79,7 +80,7 @@ export function VenueRightSection({ eventsData }: VenueRightSectionProps) {
                         <div className="flex flex-col gap-10 pt-6">
                             {upcomingEvents.map((upcomingEvent) => (
                                 <div key={upcomingEvent.eventId}>
-                                    <EventCard {...upcomingEvent} isPastEvent={false} venue={{venueName: upcomingEvent.eventName}}/>
+                                    <EventCard {...upcomingEvent} isPastEvent={false}  venue={{venueName: venue}}/>
                                 </div>
                             ))}
                             {upcomingEvents.length === 0 && (

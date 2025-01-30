@@ -1,3 +1,5 @@
+"use client"
+
 import Image from 'next/image'
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { cn } from "@/lib/utils";

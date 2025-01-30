@@ -9,8 +9,8 @@ interface PageProps {
 export default async function VenuePage({ params }: PageProps) {
   // Await the params before using them
   const { venue } = await Promise.resolve(params);
-  const decodedVenue = decodeURIComponent(venue);
-  const venueData = await fetchEventsOfVenue(decodedVenue);
+  const venueName = decodeURIComponent(venue);
+  const venueData = await fetchEventsOfVenue(venueName);
 
   if (!venueData) {
     return <div>Loading...</div>; // or some error state
@@ -19,7 +19,7 @@ export default async function VenuePage({ params }: PageProps) {
   return (
     <div className="flex flex-col md:flex-row container mx-auto mt-1 md:mt-48">
       <VenueLeftSection venueData={venueData} />
-      <VenueRightSection eventsData={venueData.events}/>
+      <VenueRightSection eventsData={venueData.events} venue={venueName}/>
     </div>
   )
 }
