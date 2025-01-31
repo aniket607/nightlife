@@ -3,8 +3,10 @@
 import Image from 'next/image'
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { cn } from "@/lib/utils";
+import { useRouter } from 'next/navigation'
 
 interface EventCardProps {
+  eventId: number
   eventName: string
   eventDescription: string | null
   eventDate: string | Date
@@ -21,6 +23,7 @@ interface EventCardProps {
 }
 
 export function EventCard({ 
+  eventId,
   eventName, 
   eventDescription, 
   eventDate, 
@@ -56,6 +59,18 @@ export function EventCard({
     const hours12 = hours % 12 || 12;
     displayTime = `${hours12}:${minutes} ${amPm}`;
   }
+
+  const router = useRouter();
+
+  const handleJoinGuestList = (eventId: number) => {
+    if (isPastEvent) return;
+    
+    // Create a URL-friendly slug with just eventId and venueName
+    const eventSlug = `${eventId}-${encodeURIComponent(venue.venueName)}`;
+    
+    router.push(`/events/${eventSlug}/`);
+
+  };
   
   return (
     <>
@@ -166,6 +181,7 @@ export function EventCard({
                 "w-full md:w-auto min-w-[150px] bg-transparent px-6 md:px-10 py-3 md:py-4 border-white/10 text-white text-xs md:text-base",
                 isPastEvent && "opacity-50 cursor-not-allowed hover:scale-100"
               )}
+              onClick={() => handleJoinGuestList(eventId)}
             />
           </div>
         </div>
@@ -173,4 +189,3 @@ export function EventCard({
     </>
   )
 }
-
