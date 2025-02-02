@@ -33,7 +33,6 @@ export function EventCard({
   eventImgUrl,
   stagGlCount = 101,
   coupleGlCount = 0,
-  isPastEvent = false
 }: EventCardProps) {
  
   let month = '';
@@ -63,10 +62,9 @@ export function EventCard({
   const router = useRouter();
 
   const handleJoinGuestList = (eventId: number) => {
-    if (isPastEvent) return;
     
     // Create a URL-friendly slug with just eventId and venueName
-    const eventSlug = `${eventId}-${encodeURIComponent(venue.venueName)}`;
+    const eventSlug = `${eventId}-${encodeURIComponent(eventName)}`;
     
     router.push(`/events/${eventSlug}/`);
 
@@ -175,11 +173,10 @@ export function EventCard({
           {/* Join Guest List Button */}
           <div className="mt-4 md:mt-8 flex justify-center">
             <InteractiveHoverButton 
-              text={isPastEvent ? "Event Ended" : "Join Guest List"}
-              disabled={isPastEvent}
+              text={"View Event Details"}
+              // disabled={isPastEvent}
               className={cn(
-                "w-full md:w-auto min-w-[150px] bg-transparent px-6 md:px-10 py-3 md:py-4 border-white/10 text-white text-xs md:text-base",
-                isPastEvent && "opacity-50 cursor-not-allowed hover:scale-100"
+                "w-full md:w-auto min-w-[150px] bg-transparent px-6 md:px-10 py-3 md:py-4 border-white/10 text-white text-xs md:text-base"
               )}
               onClick={() => handleJoinGuestList(eventId)}
             />

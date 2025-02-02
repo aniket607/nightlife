@@ -1,18 +1,21 @@
+import { Suspense } from 'react';
 import { StarsBackground } from "@/components/ui/stars-background";
 
 export default function ContactPage() {
   return (
     <div className="min-h-screen w-full bg-black">
           {/* Stars Background with fixed positioning */}
-          <div className="fixed inset-0 z-0">
-            <StarsBackground
-              starDensity={0.00030}
-              allStarsTwinkle={true}
-              twinkleProbability={1}
-              minTwinkleSpeed={2.0}
-              maxTwinkleSpeed={2.0}
-            />
-          </div>
+          <Suspense fallback={<div className="fixed inset-0 bg-black" />}>
+            <div className="fixed inset-0 z-0">
+              <StarsBackground
+                starDensity={0.00015}
+                allStarsTwinkle={false}
+                twinkleProbability={0.5}
+                minTwinkleSpeed={1.0}
+                maxTwinkleSpeed={2.0}
+              />
+            </div>
+          </Suspense>
       {/* Content */}
       <div className="relative z-10 py-20 md:py-32 px-4">
         <div className="max-w-3xl mx-auto">

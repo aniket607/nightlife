@@ -36,7 +36,7 @@ interface CoupleGuestlist {
 }
 
 export default function JoinGuestlistPage({ params, searchParams }: PageProps) {
-  const { venue } = use(params);
+  const { event } = use(params);
   const { eventId } = use(searchParams);
   const [formType, setFormType] = useState<'stag' | 'couple'>('stag');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,7 +58,7 @@ export default function JoinGuestlistPage({ params, searchParams }: PageProps) {
   });
 
   if (!eventId) {
-    redirect(`/venues/${venue}`);
+    redirect(`/events/`);
   }
 
   const handleSubmit = () => {
