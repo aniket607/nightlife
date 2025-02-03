@@ -1,9 +1,9 @@
 "use client"
 
 import { FormToggle } from '@/components/ui/form-toggle'
-import { useState, use } from 'react'
+import { useState, use, useTransition, useRef } from 'react'
 import handleGuestlistSubmit from '@/actions/handleGuestlistSubmit';
-import { Plus, Minus } from 'lucide-react';
+import { Plus, Minus, X } from 'lucide-react';
 
 interface PageProps {
   searchParams: Promise<{ eventId?: string }>
@@ -12,7 +12,10 @@ interface PageProps {
 export default function JoinGuestlistPage({ searchParams }: PageProps) {
   const [formType, setFormType] = useState<'stag' | 'couple'>('stag');
   const [guestCount, setGuestCount] = useState(1);
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [isPending, startTransition] = useTransition();
   const { eventId } = use(searchParams);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const maxGuests = formType === 'stag' ? 3 : 2;
   
@@ -28,31 +31,82 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
     }
   };
 
+  const handleSubmit = async (formData: FormData) => {
+    startTransition(async () => {
+      try {
+        const response = await handleGuestlistSubmit(formData);
+        setNotification({
+          message: response.message,
+          type: response.success ? 'success' : 'error'
+        });
+
+        if (response.success) {
+          // Reset form if submission was successful
+          setGuestCount(1);
+          formRef.current?.reset();
+        }
+      } catch (error) {
+        setNotification({
+          message: 'An error occurred while submitting the form',
+          type: 'error'
+        });
+      }
+    });
+  };
+
   return (
     <div className="container mx-auto mt-24 px-4">
       <h1 className="text-4xl font-bold text-white text-center mb-12">Join Guestlist</h1>
+      
+      {/*Confirmation Popup */}
+      {notification && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          
+          <div className={`relative bg-zinc-900 p-8 rounded-xl shadow-2xl max-w-md w-full mx-4 text-center border ${
+            notification.type === 'success' ? 'border-green-500' : 'border-red-500'
+          }`}>
+            <button
+              onClick={() => setNotification(null)}
+              className="absolute top-2 right-2 p-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full transition-colors"
+            >
+              <X size={16} />
+            </button>
+            <div className={`text-xl mb-2 ${
+              notification.type === 'success' ? 'text-green-500' : 'text-red-500'
+            }`}>
+              {notification.type === 'success' ? 'Success!' : 'Error'}
+            </div>
+            <p className="text-white text-lg mb-6">{notification.message}</p>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-4xl mx-auto">
         <div className="bg-primary backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-xl">
           <FormToggle 
             onToggle={(value) => {
               setFormType(value);
-              setGuestCount(1); // Reset guest count when switching form type
+              setGuestCount(1);
             }} 
             className="mb-6"
           />
           
           {/* Form Container */}
-          <div className="mt-8">
+          <div className="mt-8 mx-auto">
             <div className="relative bg-zinc-900/50 rounded-xl">
               {/* Form Content */}
               <div className="relative px-6 py-5">
-                <form action={handleGuestlistSubmit}>
+                <form ref={formRef} onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  handleSubmit(formData);
+                }}>
                   <input type="hidden" name="formType" value={formType} />
                   <input type="hidden" name="eventId" value={eventId} />
                   <input type="hidden" name="guestCount" value={guestCount} />
                   
                   {formType === 'stag' ? (
-                    <div className="space-y-6">
+                    <div className="space-y-6 max-w-xl mx-auto">
                       {[...Array(guestCount)].map((_, index) => (
                         <div key={index} className="space-y-4 p-4 bg-white/5 rounded-lg">
                           <h3 className="text-white font-medium">Guest {index + 1}</h3>
@@ -143,9 +197,10 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                       <div className="flex justify-end pt-4">
                         <button
                           type="submit"
-                          className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-lg transition-colors"
+                          disabled={isPending}
+                          className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Submit
+                          {isPending ? 'Submitting...' : 'Submit'}
                         </button>
                       </div>
                     </div>
@@ -297,9 +352,10 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                       <div className="flex justify-end pt-4">
                         <button
                           type="submit"
-                          className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-lg transition-colors"
+                          disabled={isPending}
+                          className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Submit
+                          {isPending ? 'Submitting...' : 'Submit'}
                         </button>
                       </div>
                     </div>
