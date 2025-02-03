@@ -1,4 +1,5 @@
 'use server'
+import prisma from '@/lib/prisma'
 
 interface GuestData {
   name: string
@@ -17,16 +18,46 @@ interface SubmissionResponse {
   message: string
 }
 
-// Simulate database operation
-const simulateDbOperation = async <T>(data: T): Promise<boolean> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Simulate 90% success rate
-      const success = Math.random() < 0.9;
-      console.log(`DB Operation ${success ? 'successful' : 'failed'}:`, data);
-      resolve(success);
-    }, 2000); // Simulate 2 second delay
-  });
+// Database operations for stag guestlist
+const createStagGuestlist = async (eventId: number, guests: GuestData[]): Promise<boolean> => {
+  try {
+    await prisma.stagGuestlist.createMany({
+      data: guests.map(guest => ({
+        eventId,
+        guestName: guest.name,
+        guestAge: guest.age,
+        guestMobile: guest.mobile,
+        guestEmail: guest.email
+      }))
+    });
+    return true;
+  } catch (error) {
+    console.error('Error creating stag guestlist:', error);
+    return false;
+  }
+};
+
+// Database operations for couple guestlist
+const createCoupleGuestlist = async (eventId: number, couples: CoupleData[]): Promise<boolean> => {
+  try {
+    await prisma.coupleGuestlist.createMany({
+      data: couples.map(couple => ({
+        eventId,
+        maleName: couple.male.name,
+        maleAge: couple.male.age,
+        maleMobile: couple.male.mobile,
+        maleEmail: couple.male.email,
+        femaleName: couple.female.name,
+        femaleAge: couple.female.age,
+        femaleMobile: couple.female.mobile,
+        femaleEmail: couple.female.email
+      }))
+    });
+    return true;
+  } catch (error) {
+    console.error('Error creating couple guestlist:', error);
+    return false;
+  }
 };
 
 export default async function handleGuestlistSubmit(formData: FormData): Promise<SubmissionResponse> {
@@ -48,8 +79,8 @@ export default async function handleGuestlistSubmit(formData: FormData): Promise
         guests.push(guest)
       }
       
-      // database operation
-      const success = await simulateDbOperation({ eventId, guests });
+      //await db entry for stags
+      const success = await createStagGuestlist(parseInt(eventId), guests);
       
       if (!success) {
         return {
@@ -83,8 +114,8 @@ export default async function handleGuestlistSubmit(formData: FormData): Promise
         couples.push(couple)
       }
       
-      // Simulate database operation
-      const success = await simulateDbOperation({ eventId, couples });
+      //await db entry for couples
+      const success = await createCoupleGuestlist(parseInt(eventId), couples);
       
       if (!success) {
         return {
