@@ -3,13 +3,11 @@
 import { redirect } from 'next/navigation'
 import fetchEventById from '@/actions/fetchEventById'
 import Image from 'next/image'
+import JoinGLBtn from '@/components/join-gl-btn'
 
 interface PageProps {
   params: {
     event: string
-  },
-  searchParams: {
-    eventId?: string
   }
 }
 
@@ -19,25 +17,20 @@ interface ParsedEventSlug {
 
 export default async function EventPage({ params }: PageProps) {
   const parseEventSlug = (slug: string): ParsedEventSlug => {
-    const [eventId, ...eventNameParts] = slug.split('-');
-    const eventName = eventNameParts.join('-');
-    
-    if (!eventId || !eventName) {
-      redirect('/');
-    }
-    
+    const [eventId] = slug.split('-');
     return {
       eventId
     };
   };
 
   // Parse the incoming slug
-  const { eventId } = parseEventSlug(params.event);          
+  const incomingParams = await params;
+  const { eventId } = parseEventSlug(incomingParams.event);          
   
   // Fetch event details
   const eventDetails = await fetchEventById(parseInt(eventId));
   if (!eventDetails) {
-    redirect('/'); 
+    redirect('/events'); 
   }
 
   // Time formatting
@@ -144,9 +137,7 @@ export default async function EventPage({ params }: PageProps) {
                 </div>
                 
                 {/* Call to Action Button */}
-                <button className="my-10 bg-white/10 hover:bg-white/20 transition-colors text-white py-3 w-full rounded-lg">
-                  Join Guest List
-                </button>
+                <JoinGLBtn eventId={eventId} />
               </div>
 
               {/* About Section */}

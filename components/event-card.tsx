@@ -61,7 +61,7 @@ export function EventCard({
 
   const router = useRouter();
 
-  const handleJoinGuestList = (eventId: number) => {
+  const handleViewEventDetails = (eventId: number) => {
     
     // Create a URL-friendly slug with just eventId and venueName
     const eventSlug = `${eventId}-${encodeURIComponent(eventName)}`;
@@ -170,15 +170,14 @@ export function EventCard({
             </div>
           </div>
 
-          {/* Join Guest List Button */}
+          {/* View Event Details Button */}
           <div className="mt-4 md:mt-8 flex justify-center">
             <InteractiveHoverButton 
               text={"View Event Details"}
-              // disabled={isPastEvent}
               className={cn(
                 "w-full md:w-auto min-w-[150px] bg-transparent px-6 md:px-10 py-3 md:py-4 border-white/10 text-white text-xs md:text-base"
               )}
-              onClick={() => handleJoinGuestList(eventId)}
+              onClick={() => handleViewEventDetails(eventId)}
             />
           </div>
         </div>
