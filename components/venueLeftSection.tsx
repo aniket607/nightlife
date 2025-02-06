@@ -1,4 +1,5 @@
 import Image from "next/image";
+import OpenInMapsBtn from "./open-in-maps-btn";
 
 interface Event {
   createdAt: Date;
@@ -76,14 +77,10 @@ export function VenueLeftSection({ venueData }: VenueLeftSectionProps) {
               </div>    
             </div>
             {venueData.locationUrl && (
-              <a 
-                href={venueData.locationUrl} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-xs md:text-sm text-white hover:text-white/80 transition-colors"
-              >
-                View on Map
-              </a>
+              <OpenInMapsBtn 
+                mapUrl={venueData.locationUrl}
+                className="bg-white/85 hover:bg-white/50 text-black font-medium shadow-lg hover:shadow-xl"
+              />
             )}
           </div>
         </div>

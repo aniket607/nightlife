@@ -29,9 +29,21 @@ export default async function VenuePage({ params }: PageProps) {
           maxTwinkleSpeed={2.0}
         />
       </div>
-    <div className="flex flex-col md:flex-row container mx-auto mt-1 md:mt-48">
-      <VenueLeftSection venueData={venueData} />
-      <VenueRightSection eventsData={venueData.events} venue={venueName}/>
+    <div className="w-full max-w-[1400px] mx-auto px-4 md:px-6 pt-24 md:pt-36 pb-20 relative z-10">
+      <div className="flex flex-col md:flex-row md:gap-12">
+        {/* Left section - scrollable on mobile, fixed on desktop */}
+        <div className="w-full md:w-[400px] md:fixed md:top-36 z-20">
+          <VenueLeftSection venueData={venueData} />
+        </div>
+
+        {/* Placeholder for fixed section - only visible on desktop */}
+        <div className="hidden md:block md:w-[400px] md:flex-shrink-0"></div>
+
+        {/* Right section */}
+        <div className="w-full md:w-[900px] mt-8 md:mt-0 relative z-20">
+          <VenueRightSection eventsData={venueData.events} venue={venueName}/>
+        </div>
+      </div>
     </div>
     </>
   )

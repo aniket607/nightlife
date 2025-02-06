@@ -1,3 +1,4 @@
+"use client"
 import { startOfDay } from "date-fns";
 import { EventCard } from "./event-card";
 import {
@@ -5,7 +6,7 @@ import {
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-  } from "@/components/ui/accordion"
+} from "@/components/ui/accordion"
 
 interface Event {
     eventId: number;
@@ -47,40 +48,40 @@ export function VenueRightSection({ eventsData, venue }: VenueRightSectionProps)
 
     return(
         <div className="w-full max-w-[900px] mx-auto px-4">
-             {/* Past Events Accordion */}
+            {/* Past Events Accordion */}
             <Accordion type="single" collapsible className="w-full shadow shadow-gray-600/60 rounded-2xl mb-6">
                 <AccordionItem value="past-events" className="border-white/50 rounded-2xl hover:border-white/70">
-                <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
-                    PAST EVENTS
-                </AccordionTrigger>
-                <AccordionContent className="flex justify-center">
-                    <div className="flex flex-col gap-10 pt-6">
-                        {pastEvents.map((pastEvent) => (
-                            <div key={pastEvent.eventId}>
-                                <EventCard {...pastEvent} isPastEvent={true} venue={{venueName: venue}}/>
-                            </div>
-                        ))}
-                        {pastEvents.length === 0 && (
-                            <div className="text-center text-white/80 font-bold font-helvetica">
-                                <p>No Past Events</p>
-                            </div>
-                        )}
-                    </div>
-                </AccordionContent>
+                    <AccordionTrigger className="flex flex-1 items-center justify-between py-4 text-xl font-bold text-white hover:text-white/80 px-5">
+                        PAST EVENTS
+                    </AccordionTrigger>
+                    <AccordionContent className="flex justify-center">
+                        <div className="flex flex-col gap-10 pt-6">
+                            {pastEvents.map((pastEvent) => (
+                                <div key={pastEvent.eventId}>
+                                    <EventCard {...pastEvent} isPastEvent={true} venue={{venueName: venue}}/>
+                                </div>
+                            ))}
+                            {pastEvents.length === 0 && (
+                                <div className="text-center text-white/80 font-bold font-helvetica">
+                                    <p>No Past Events</p>
+                                </div>
+                            )}
+                        </div>
+                    </AccordionContent>
                 </AccordionItem>
             </Accordion>
             
             {/* Upcoming Events Accordion */}
             <Accordion type="single" collapsible defaultValue="upcoming-events" className="w-full shadow shadow-gray-600/70 rounded-2xl mb-20">
                 <AccordionItem value="upcoming-events" className="border-white/50 rounded-2xl hover:border-white/70">
-                    <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
+                    <AccordionTrigger className="flex flex-1 items-center justify-between py-4 text-xl font-bold text-white hover:text-white/80 px-5">
                         UPCOMING EVENTS
                     </AccordionTrigger>
                     <AccordionContent className="flex justify-center">
                         <div className="flex flex-col gap-10 pt-6">
                             {upcomingEvents.map((upcomingEvent) => (
                                 <div key={upcomingEvent.eventId}>
-                                    <EventCard {...upcomingEvent} isPastEvent={false}  venue={{venueName: venue}}/>
+                                    <EventCard {...upcomingEvent} isPastEvent={false} venue={{venueName: venue}}/>
                                 </div>
                             ))}
                             {upcomingEvents.length === 0 && (

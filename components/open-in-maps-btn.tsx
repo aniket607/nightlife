@@ -1,19 +1,24 @@
 'use client'
 
+import { cn } from "@/lib/utils"
+
 interface OpenInMapsBtnProps {
   mapUrl: string;
+  className?: string;
 }
 
-export default function OpenInMapsBtn({ mapUrl }: OpenInMapsBtnProps) {
+export default function OpenInMapsBtn({ mapUrl, className }: OpenInMapsBtnProps) {
   const handleOpenMaps = () => {
-    // Create a Google Maps URL with the address
     window.open(mapUrl);
   };
 
   return (
     <button
       onClick={handleOpenMaps}
-      className="flex items-center gap-2 bg-white/10 hover:bg-white/15 transition-colors px-4 py-2 rounded-full text-sm"
+      className={cn(
+        "flex items-center gap-2 bg-white/10 hover:bg-white/15 transition-colors px-4 py-2 rounded-full text-sm",
+        className
+      )}
     >
       <svg 
         className="w-4 h-4" 
