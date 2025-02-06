@@ -146,7 +146,47 @@ export default async function EventPage({ params }: PageProps) {
                 <p className="text-gray-300 leading-relaxed">
                   {eventDetails.eventDescription || 'No description available.'}
                 </p>
-              </div>              
+              </div>
+              <div className='h-[1px] w-full bg-white/20'/>
+              {/* Lineup Section */}
+              <div className="space-y-4">
+                <h2 className="text-2xl font-semibold">Artist Lineup</h2>
+                <div className="space-y-6">
+                  {/* Artist slots */}
+                  <div className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-medium group-hover:text-white transition-colors">Bob Corsi & Kybbe</h3>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-medium group-hover:text-white transition-colors">Elvis Delmar</h3>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-medium group-hover:text-white transition-colors">Big Mountain County</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
