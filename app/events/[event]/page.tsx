@@ -4,6 +4,8 @@ import { redirect } from 'next/navigation'
 import fetchEventById from '@/actions/fetchEventById'
 import Image from 'next/image'
 import JoinGLBtn from '@/components/join-gl-btn'
+import CopyAddressBtn from '@/components/copy-address-btn'
+import OpenInMapsBtn from '@/components/open-in-maps-btn'
 
 interface PageProps {
   params: {
@@ -71,7 +73,7 @@ export default async function EventPage({ params }: PageProps) {
           alt=""
           fill
           className="object-cover opacity-50"
-          style={{ filter: 'blur(30px)' }}
+          style={{ filter: 'blur(35px)' }}
           priority
         />
         <div className="absolute inset-0 bg-black/50" />
@@ -142,18 +144,20 @@ export default async function EventPage({ params }: PageProps) {
 
               {/* About Section */}
               <div className="space-y-4">
-                <h2 className="text-2xl font-semibold">About</h2>
+                <h2 className="text-2xl font-semibold font-poppins">About</h2>
                 <p className="text-gray-300 leading-relaxed">
                   {eventDetails.eventDescription || 'No description available.'}
                 </p>
               </div>
+              {/* Divider */}
               <div className='h-[1px] w-full bg-white/20'/>
+              
               {/* Lineup Section */}
               <div className="space-y-4">
-                <h2 className="text-2xl font-semibold">Artist Lineup</h2>
-                <div className="space-y-6">
+                <h2 className="text-2xl font-semibold font-poppins">Artist Lineup</h2>
+                <div className="space-y-4">
                   {/* Artist slots */}
-                  <div className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
+                  <div className="flex items-center gap-3 group hover:bg-white/5 rounded-lg transition-colors">
                     <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
                       <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
@@ -164,7 +168,7 @@ export default async function EventPage({ params }: PageProps) {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
+                  <div className="flex items-center gap-3 group hover:bg-white/5 rounded-lg transition-colors">
                     <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
                       <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
@@ -175,7 +179,7 @@ export default async function EventPage({ params }: PageProps) {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
+                  <div className="flex items-center gap-3 group hover:bg-white/5 rounded-lg transition-colors">
                     <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
                       <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
@@ -187,6 +191,24 @@ export default async function EventPage({ params }: PageProps) {
                   </div>
                 </div>
               </div>
+
+              {/* Divider */}
+              <div className='h-[1px] w-full bg-white/20'/>
+
+              {/* Venue Details */}
+              <div className="space-y-3">
+                <h2 className="text-lg font-medium font-poppins">Venue Details :</h2>
+                <h2 className='font-semibold font-futura'>{eventDetails.venue.venueName}</h2>
+                <div className="flex max-w-[380px] items-start">
+                  <p className='text-xs flex-grow'>{eventDetails.venue.address}</p>
+                  <CopyAddressBtn address={eventDetails.venue.address} />
+                </div>
+                {eventDetails.venue.locationUrl && <div className="mt-3">
+                  <OpenInMapsBtn mapUrl={eventDetails.venue.locationUrl} />
+                </div>}
+              </div>
+              {/* Divider */}
+              <div className='h-[1px] w-full bg-white/20'/>
             </div>
           </div>
         </div>
