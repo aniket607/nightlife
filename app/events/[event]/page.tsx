@@ -62,10 +62,7 @@ export default async function EventPage({ params }: PageProps) {
   }
 
   return (
-    <div className="h-screen overflow-x-hidden overflow-y-auto" style={{
-      scrollbarWidth: 'thin',
-      scrollbarColor: 'rgb(75 85 99) transparent'
-    }}>
+    <div className="min-h-screen relative bg-black">
       {/* Blurred background wrapper */}
       <div className="fixed inset-0 -z-1">
         <Image
@@ -80,30 +77,27 @@ export default async function EventPage({ params }: PageProps) {
       </div>
 
       {/* Main content */}
-      <div className="max-w-4xl mx-auto mt-36">
-        <div className="flex gap-8 relative">
-          {/* Left fixed section */}
-          <div className="w-[350px] fixed">
-            <div className="rounded-lg overflow-hidden w-[350px] h-[400px] relative">
+      <div className="w-full max-w-4xl mx-auto px-4 md:px-6 pt-24 md:pt-36 pb-20">
+        <div className="flex flex-col md:flex-row md:gap-8">
+          {/* Left section - scrollable on mobile, fixed on desktop */}
+          <div className="w-full md:w-[350px] md:fixed md:top-36">
+            <div className="max-w-[330px] mx-auto md:max-w-none rounded-lg overflow-hidden w-full md:w-[350px] aspect-[4/5] md:h-[400px] relative">
               <Image
                 src={eventDetails.eventImgUrl!}
                 alt={eventDetails.eventName}
                 fill
-                sizes="(max-width: 350px) 100vw, 350px"
+                sizes="(max-width: 768px) 100vw, 350px"
                 className="object-cover"
                 priority
               />
             </div>
-            <div className="mt-4 space-y-2 font-helvetica">
-              <p className="text-gray-400">@ {eventDetails.venue.venueName}</p>
-            </div>
           </div>
 
-          {/* Placeholder for fixed section */}
-          <div className="w-[350px] flex-shrink-0"></div>
+          {/* Placeholder for fixed section - only visible on desktop */}
+          <div className="hidden md:block md:w-[350px] md:flex-shrink-0"></div>
 
           {/* Right section */}
-          <div className="w-[600px]">
+          <div className="w-full md:w-[600px] z-10 mt-8 md:mt-0">
             <div className="text-white space-y-8 pb-8 font-helvetica">
               {/* Event Header Info */}
               <div className="w-full">
