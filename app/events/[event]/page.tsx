@@ -77,7 +77,7 @@ export default async function EventPage({ params }: PageProps) {
       </div>
 
       {/* Main content */}
-      <div className="w-full max-w-4xl mx-auto px-4 md:px-6 pt-24 md:pt-36 pb-20">
+      <div className="w-full max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-36 pb-20">
         <div className="flex flex-col md:flex-row md:gap-8">
           {/* Left section - scrollable on mobile, fixed on desktop */}
           <div className="w-full md:w-[350px] md:fixed md:top-36">
@@ -97,13 +97,13 @@ export default async function EventPage({ params }: PageProps) {
           <div className="hidden md:block md:w-[350px] md:flex-shrink-0"></div>
 
           {/* Right section */}
-          <div className="w-full md:w-[600px] z-10 mt-8 md:mt-0">
+          <div className="w-full md:w-[600px] z-10 md:ml-10 mt-8 md:mt-0">
             <div className="text-white space-y-8 pb-8 font-helvetica">
               {/* Event Header Info */}
               <div className="w-full">
-                <h1 className="text-5xl font-bold">{eventDetails.eventName}</h1>
-                <p className="text-2xl text-gray-400 my-4">{eventDetails.venue.venueName}</p>
-                <div className="flex items-center gap-2 text-xl mt-4">
+                <h1 className=" text-3xl md:text-5xl font-bold">{eventDetails.eventName}</h1>
+                <p className="text-lg md:text-2xl text-gray-400 my-4">{eventDetails.venue.venueName}</p>
+                <div className="flex items-center gap-2 text-lg md:text-xl mt-4">
                   <span>{day} {month}, {year}</span>
                   <span>•</span>
                   <span>{displayTime}</span>
