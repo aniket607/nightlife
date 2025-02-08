@@ -80,22 +80,7 @@ export default async function EventPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen relative bg-black">
-      {/* Blurred background wrapper */}
-      <div className="fixed inset-0 -z-1">
-        <Image
-          src={eventDetails.eventImgUrl!}
-          alt=""
-          fill
-          className="object-cover opacity-50"
-          style={{ filter: 'blur(35px)' }}
-          priority
-        />
-        <div className="absolute inset-0 bg-black/50" />
-      </div>
-
-      {/* Main content */}
-      <div className="w-full max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-36 pb-20">
+    <div className="w-full max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-36 pb-20">
         <div className="flex flex-col md:flex-row md:gap-8">
           {/* Left section - scrollable on mobile, fixed on desktop */}
           <div className="w-full md:w-[350px] md:fixed md:top-36">
@@ -225,6 +210,5 @@ export default async function EventPage({ params }: PageProps) {
           </div>
         </div>
       </div>
-    </div>
   );
 }

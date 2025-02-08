@@ -4,7 +4,6 @@ import { FormToggle } from '@/components/ui/form-toggle'
 import { useState, use, useTransition, useRef } from 'react'
 import handleGuestlistSubmit from '@/actions/handleGuestlistSubmit';
 import { Plus, Minus, X } from 'lucide-react';
-import Image from 'next/image';
 
 interface PageProps {
   searchParams: Promise<{ eventId?: string }>
@@ -56,17 +55,6 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
   };
 
   return (
-    <div className="min-h-screen relative">
-      {/* Background Image */}
-      <div className="fixed inset-0 z-0">
-        <Image
-          src="/doodle.jpg"
-          alt="Background Doodle"
-          fill
-          className="object-cover opacity-10"
-          priority
-        />
-      </div>
     <div className="container mx-auto mt-24 px-4 relative z-10">
       <h1 className="text-4xl font-bold font-futura text-white text-center mb-12">Join Guestlist</h1>
       
@@ -94,7 +82,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
       )}
 
       <div className="max-w-4xl mx-auto">
-        <div className="bg-slate-800 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-xl">
+        <div className="bg-gradient-to-br from-slate-900/60 via-zinc-900/80 to-slate-900/90 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-xl">
           <FormToggle 
             onToggle={(value) => {
               setFormType(value);
@@ -378,6 +366,5 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
         </div>
       </div>
       </div>
-    </div>
   );
 }
