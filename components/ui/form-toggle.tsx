@@ -48,7 +48,7 @@ export function FormToggle({ onToggle, className }: FormToggleProps) {
           )}
         >
           <User className="w-4 h-4" strokeWidth={1.5} />
-          <span className="text-sm font-medium">Stag</span>
+          <span className="text-sm font-medium font-helvetica">Stag</span>
         </div>
 
         {/* Couple Icon + Text */}
@@ -59,7 +59,7 @@ export function FormToggle({ onToggle, className }: FormToggleProps) {
           )}
         >
           <Users className="w-4 h-4" strokeWidth={1.5} />
-          <span className="text-sm font-medium">Couple</span>
+          <span className="text-sm font-helvetica font-medium">Couple</span>
         </div>
       </div>
     </div>

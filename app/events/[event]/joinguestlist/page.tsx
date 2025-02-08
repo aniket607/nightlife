@@ -3,7 +3,7 @@
 import { FormToggle } from '@/components/ui/form-toggle'
 import { useState, use, useTransition, useRef } from 'react'
 import handleGuestlistSubmit from '@/actions/handleGuestlistSubmit';
-import { Plus, Minus, X } from 'lucide-react';
+import { Plus, X , Trash} from 'lucide-react';
 
 interface PageProps {
   searchParams: Promise<{ eventId?: string }>
@@ -81,8 +81,8 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-gradient-to-br from-slate-900/60 via-zinc-900/80 to-slate-900/90 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-xl">
+      <div className="max-w-4xl mx-auto mb-16">
+        <div className="bg-gradient-to-br from-slate-900/60 via-zinc-900/80 to-slate-900/90 backdrop-blur-xl rounded-3xl p-2 md:p-8 border border-white/10 shadow-xl">
           <FormToggle 
             onToggle={(value) => {
               setFormType(value);
@@ -94,7 +94,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
           {/* Form Container */}
           <div className="mt-8 mx-auto">
               {/* Form Content */}
-              <div className="relative px-6 py-5 ">
+              <div className="relative px-6 py-5  ">
                 <form ref={formRef} onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   const formData = new FormData(e.currentTarget);
@@ -107,8 +107,8 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                   {formType === 'stag' ? (
                     <div className="space-y-6 max-w-xl mx-auto">
                       {[...Array(guestCount)].map((_, index) => (
-                        <div key={index} className="space-y-4 p-4 bg-white/5 rounded-xl">
-                          <h3 className="text-white font-medium">Guest {index + 1}</h3>
+                        <div key={index} className="space-y-4 p-6 bg-white/5 rounded-xl">
+                          <h3 className="text-white font-futura underline font-medium">Guest {index + 1}</h3>
                           <div className="space-y-2">
                             <label htmlFor={`guestName${index}`} className="block text-sm font-medium text-white">
                               Guest Name
@@ -158,6 +158,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                               id={`guestEmail${index}`}
                               type="email"
                               name={`guests[${index}].email`}
+                              placeholder="Enter email address"
                               required
                               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                             />
@@ -166,16 +167,16 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                       ))}
                       
                       {/* Guest Controls */}
-                      <div className="flex justify-between items-center pt-4">
+                      <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
                           {guestCount > 1 && (
                             <button
                               type="button"
                               onClick={handleRemoveGuest}
-                              className="flex items-center gap-1 px-3 py-1 text-sm text-white/70 hover:text-white bg-white/5 rounded-lg transition-colors"
+                              className="flex items-center gap-1 px-3 py-1 text-sm text-red-500/80 hover:text-red-600/80 bg-white/5 rounded-lg transition-colors"
                             >
-                              <Minus size={16} />
-                              Remove Guest
+                              <Trash size={16} />
+                              <span className="hidden sm:inline">Remove Guest</span>
                             </button>
                           )}
                           {guestCount < maxGuests && (
@@ -185,7 +186,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                               className="flex items-center gap-1 px-3 py-1 text-sm text-white/70 hover:text-white bg-white/5 rounded-lg transition-colors"
                             >
                               <Plus size={16} />
-                              Add Guest
+                              <span className="hidden sm:inline">Add Guest</span>
                             </button>
                           )}
                         </div>
@@ -198,7 +199,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                         <button
                           type="submit"
                           disabled={isPending}
-                          className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="bg-[#E5FF10] hover:bg-[#E5FF10]/80 text-black font-helvetica  px-6 py-2 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {isPending ? 'Submitting...' : 'Submit'}
                         </button>
@@ -207,8 +208,8 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                   ) : (
                     <div className="space-y-6">
                       {[...Array(guestCount)].map((_, index) => (
-                        <div key={index} className="space-y-4 p-4 bg-white/5 rounded-xl">
-                          <h3 className="text-white font-medium">Couple {index + 1}</h3>
+                        <div key={index} className="space-y-4 p-6 bg-white/5 rounded-xl">
+                          <h3 className="text-white font-futura underline font-medium">Couple {index + 1}</h3>
                           <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                               <label htmlFor={`maleName${index}`} className="block text-sm font-medium text-white">
@@ -321,16 +322,16 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                       ))}
 
                       {/* Couple Controls */}
-                      <div className="flex justify-between items-center pt-4">
+                      <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
                           {guestCount > 1 && (
                             <button
                               type="button"
                               onClick={handleRemoveGuest}
-                              className="flex items-center gap-1 px-3 py-1 text-sm text-white/70 hover:text-white bg-white/5 rounded-lg transition-colors"
+                              className="flex items-center gap-1 px-3 py-1 text-sm text-red-500/80 hover:text-red-600/80 bg-white/5 rounded-lg transition-colors"
                             >
-                              <Minus size={16} />
-                              Remove Couple
+                              <Trash size={16} />
+                              <span className="hidden sm:inline">Remove Couple</span>
                             </button>
                           )}
                           {guestCount < maxGuests && (
@@ -340,7 +341,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                               className="flex items-center gap-1 px-3 py-1 text-sm text-white/70 hover:text-white bg-white/5 rounded-lg transition-colors"
                             >
                               <Plus size={16} />
-                              Add Couple
+                              <span className="hidden sm:inline">Add Couple</span>
                             </button>
                           )}
                         </div>
@@ -353,7 +354,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                         <button
                           type="submit"
                           disabled={isPending}
-                          className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="bg-[#E5FF10] hover:bg-[#E5FF10]/80 text-black font-helvetica px-6 py-2 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {isPending ? 'Submitting...' : 'Submit'}
                         </button>
