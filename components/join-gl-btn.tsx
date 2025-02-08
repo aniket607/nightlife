@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-export default function JoinGLBtn({ eventId }: { eventId: string }) {
+export default function JoinGLBtn({ eventId, isEventPassed }: { eventId: string, isEventPassed: boolean }) {
     const router = useRouter();
     const handleJoin = () => {
         console.log('Join Guest List');
@@ -16,9 +16,14 @@ export default function JoinGLBtn({ eventId }: { eventId: string }) {
             </div>
             <button 
                 onClick={handleJoin}
-                className="bg-[#E5FF10] hover:bg-[#E5FF10]/80 transition-all text-black font-bold w-40 h-10 rounded-full text-base shadow-lg font-helvetica hover:scale-105 active:scale-[0.98]"
+                disabled={isEventPassed}
+                className={`w-40 h-10 rounded-full text-base font-bold font-helvetica shadow-lg transition-all ${
+                    isEventPassed
+                        ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                        : 'bg-[#E5FF10] hover:bg-[#E5FF10]/80 text-black hover:scale-105 active:scale-[0.98]'
+                }`}
             >
-                Join Guest List
+                {isEventPassed ? 'Event is over' : 'Join Guest List'}
             </button>
         </div>
     )

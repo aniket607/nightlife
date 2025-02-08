@@ -50,12 +50,30 @@ export default async function EventPage({ params }: PageProps) {
   let month = '';
   let day = '';
   let year = '';
+  // Determine if event has passed
+  let isEventPassed = false;
   try {
     const dateObj = new Date(eventDetails.eventDate);
     if (!isNaN(dateObj.getTime())) {
       month = dateObj.toLocaleString('en-US', { month: 'short' }).toUpperCase();
       day = dateObj.getDate().toString();
       year = dateObj.getFullYear().toString();
+
+    
+
+      // Create event datetime by combining date and time
+      const eventDateTime = new Date(eventDetails.eventDate);
+      if (eventDetails.eventTime) {
+        const timeObj = new Date(eventDetails.eventTime);
+        eventDateTime.setUTCHours(timeObj.getUTCHours());
+        eventDateTime.setUTCMinutes(timeObj.getUTCMinutes());
+      }
+      
+      // Current time in IST
+      const currentTime = new Date();
+      
+      // Compare event time with current time
+      isEventPassed = eventDateTime < currentTime;
     }
   } catch (error) {
     console.error('Invalid date:', eventDetails.eventDate);
@@ -133,7 +151,7 @@ export default async function EventPage({ params }: PageProps) {
                 </div>
                 
                 {/* Call to Action Button */}
-                <JoinGLBtn eventId={eventId} />
+                <JoinGLBtn eventId={eventId} isEventPassed={isEventPassed} />
               </div>
 
               {/* About Section */}
