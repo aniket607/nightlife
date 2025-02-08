@@ -4,6 +4,7 @@ import { FormToggle } from '@/components/ui/form-toggle'
 import { useState, use, useTransition, useRef } from 'react'
 import handleGuestlistSubmit from '@/actions/handleGuestlistSubmit';
 import { Plus, Minus, X } from 'lucide-react';
+import Image from 'next/image';
 
 interface PageProps {
   searchParams: Promise<{ eventId?: string }>
@@ -55,8 +56,19 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
   };
 
   return (
-    <div className="container mx-auto mt-24 px-4">
-      <h1 className="text-4xl font-bold text-white text-center mb-12">Join Guestlist</h1>
+    <div className="min-h-screen relative">
+      {/* Background Image */}
+      <div className="fixed inset-0 z-0">
+        <Image
+          src="/doodle.jpg"
+          alt="Background Doodle"
+          fill
+          className="object-cover opacity-10"
+          priority
+        />
+      </div>
+    <div className="container mx-auto mt-24 px-4 relative z-10">
+      <h1 className="text-4xl font-bold font-futura text-white text-center mb-12">Join Guestlist</h1>
       
       {/*Confirmation Popup */}
       {notification && (
@@ -82,7 +94,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
       )}
 
       <div className="max-w-4xl mx-auto">
-        <div className="bg-primary backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-xl">
+        <div className="bg-slate-800 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-xl">
           <FormToggle 
             onToggle={(value) => {
               setFormType(value);
@@ -93,9 +105,8 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
           
           {/* Form Container */}
           <div className="mt-8 mx-auto">
-            <div className="relative bg-zinc-900/50 rounded-xl">
               {/* Form Content */}
-              <div className="relative px-6 py-5">
+              <div className="relative px-6 py-5 ">
                 <form ref={formRef} onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   const formData = new FormData(e.currentTarget);
@@ -108,7 +119,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                   {formType === 'stag' ? (
                     <div className="space-y-6 max-w-xl mx-auto">
                       {[...Array(guestCount)].map((_, index) => (
-                        <div key={index} className="space-y-4 p-4 bg-white/5 rounded-lg">
+                        <div key={index} className="space-y-4 p-4 bg-white/5 rounded-xl">
                           <h3 className="text-white font-medium">Guest {index + 1}</h3>
                           <div className="space-y-2">
                             <label htmlFor={`guestName${index}`} className="block text-sm font-medium text-white">
@@ -120,7 +131,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                               name={`guests[${index}].name`}
                               placeholder="Enter full name"
                               required
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                             />
                           </div>
                           <div className="space-y-2">
@@ -135,7 +146,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                               required
                               min="18"
                               max="100"
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                             />
                           </div>
                           <div className="space-y-2">
@@ -145,9 +156,10 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                             <input
                               id={`guestMobile${index}`}
                               type="tel"
+                              placeholder="10 Digit Mobile number"
                               name={`guests[${index}].mobile`}
                               required
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                             />
                           </div>
                           <div className="space-y-2">
@@ -159,7 +171,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                               type="email"
                               name={`guests[${index}].email`}
                               required
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                             />
                           </div>
                         </div>
@@ -207,7 +219,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                   ) : (
                     <div className="space-y-6">
                       {[...Array(guestCount)].map((_, index) => (
-                        <div key={index} className="space-y-4 p-4 bg-white/5 rounded-lg">
+                        <div key={index} className="space-y-4 p-4 bg-white/5 rounded-xl">
                           <h3 className="text-white font-medium">Couple {index + 1}</h3>
                           <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
@@ -219,7 +231,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                                 type="text"
                                 name={`couples[${index}].male.name`}
                                 required
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                               />
                             </div>
                             <div className="space-y-2">
@@ -231,7 +243,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                                 type="text"
                                 name={`couples[${index}].female.name`}
                                 required
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                               />
                             </div>
                           </div>
@@ -247,7 +259,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                                 required
                                 min="18"
                                 max="100"
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                               />
                             </div>
                             <div className="space-y-2">
@@ -261,7 +273,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                                 required
                                 min="18"
                                 max="100"
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                               />
                             </div>
                           </div>
@@ -275,7 +287,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                                 type="tel"
                                 name={`couples[${index}].male.mobile`}
                                 required
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                               />
                             </div>
                             <div className="space-y-2">
@@ -287,7 +299,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                                 type="tel"
                                 name={`couples[${index}].female.mobile`}
                                 required
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                               />
                             </div>
                           </div>
@@ -301,7 +313,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                                 type="email"
                                 name={`couples[${index}].male.email`}
                                 required
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                               />
                             </div>
                             <div className="space-y-2">
@@ -313,7 +325,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                                 type="email"
                                 name={`couples[${index}].female.email`}
                                 required
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
                               />
                             </div>
                           </div>
@@ -362,9 +374,9 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                   )}
                 </form>
               </div>
-            </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
