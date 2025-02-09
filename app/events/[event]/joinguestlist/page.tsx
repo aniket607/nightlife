@@ -1,8 +1,116 @@
 "use client"
 
 import { FormToggle } from '@/components/ui/form-toggle'
+import { GuestFormFields } from '@/components/ui/guest-form-fields'
 import { useState, use, useTransition, useRef } from 'react'
 import handleGuestlistSubmit from '@/actions/handleGuestlistSubmit';
+
+const stagFields = [
+  {
+    id: 'guestName',
+    label: 'Guest Name',
+    type: 'text',
+    name: (index: number) => `guests[${index}].name`,
+    placeholder: 'Enter full name',
+    required: true
+  },
+  {
+    id: 'guestAge',
+    label: 'Age',
+    type: 'number',
+    name: (index: number) => `guests[${index}].age`,
+    placeholder: 'Must be 18 or older',
+    required: true,
+    min: '18',
+    max: '100'
+  },
+  {
+    id: 'guestMobile',
+    label: 'Mobile Number',
+    type: 'tel',
+    name: (index: number) => `guests[${index}].mobile`,
+    placeholder: '10 Digit Mobile number',
+    required: true
+  },
+  {
+    id: 'guestEmail',
+    label: 'Email',
+    type: 'email',
+    name: (index: number) => `guests[${index}].email`,
+    placeholder: 'Enter email address',
+    required: true
+  }
+];
+
+const coupleFields = [
+  {
+    id: 'maleName',
+    label: 'Male Name',
+    type: 'text',
+    name: (index: number) => `couples[${index}].male.name`,
+    placeholder: 'Enter full name',
+    required: true
+  },
+  {
+    id: 'femaleName',
+    label: 'Female Name',
+    type: 'text',
+    name: (index: number) => `couples[${index}].female.name`,
+    placeholder: 'Enter full name',
+    required: true
+  },
+  {
+    id: 'maleAge',
+    label: 'Male Age',
+    type: 'number',
+    name: (index: number) => `couples[${index}].male.age`,
+    placeholder: 'Must be 18 or older',
+    required: true,
+    min: '18',
+    max: '100'
+  },
+  {
+    id: 'femaleAge',
+    label: 'Female Age',
+    type: 'number',
+    name: (index: number) => `couples[${index}].female.age`,
+    placeholder: 'Must be 18 or older',
+    required: true,
+    min: '18',
+    max: '100'
+  },
+  {
+    id: 'maleMobile',
+    label: 'Male Mobile Number',
+    type: 'tel',
+    name: (index: number) => `couples[${index}].male.mobile`,
+    placeholder: 'Enter mobile number',
+    required: true
+  },
+  {
+    id: 'femaleMobile',
+    label: 'Female Mobile Number',
+    type: 'tel',
+    name: (index: number) => `couples[${index}].female.mobile`,
+    placeholder: 'Enter mobile number',
+    required: true
+  },
+  {
+    id: 'maleEmail',
+    label: 'Male Email',
+    type: 'email',
+    name: (index: number) => `couples[${index}].male.email`,
+    placeholder: 'Enter email address',
+    required: true
+  },
+  {
+    id: 'femaleEmail',
+    label: 'Female Email',
+    type: 'email',
+    name: (index: number) => `couples[${index}].female.email`,
+    placeholder: 'Enter email address (optional)'
+  }
+];
 import { Plus, X , Trash} from 'lucide-react';
 
 interface PageProps {
@@ -107,63 +215,16 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                   {formType === 'stag' ? (
                     <div className="space-y-6 max-w-xl mx-auto">
                       {[...Array(guestCount)].map((_, index) => (
-                        <div key={index} className="space-y-4 p-6 bg-white/5 rounded-xl">
-                          <h3 className="text-white font-futura underline font-medium">Guest {index + 1}</h3>
-                          <div className="space-y-2">
-                            <label htmlFor={`guestName${index}`} className="block text-sm font-medium text-white">
-                              Guest Name
-                            </label>
-                            <input
-                              id={`guestName${index}`}
-                              type="text"
-                              name={`guests[${index}].name`}
-                              placeholder="Enter full name"
-                              required
-                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label htmlFor={`guestAge${index}`} className="block text-sm font-medium text-white">
-                              Age
-                            </label>
-                            <input
-                              id={`guestAge${index}`}
-                              type="number"
-                              name={`guests[${index}].age`}
-                              placeholder="Must be 18 or older"
-                              required
-                              min="18"
-                              max="100"
-                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label htmlFor={`guestMobile${index}`} className="block text-sm font-medium text-white">
-                              Mobile Number
-                            </label>
-                            <input
-                              id={`guestMobile${index}`}
-                              type="tel"
-                              placeholder="10 Digit Mobile number"
-                              name={`guests[${index}].mobile`}
-                              required
-                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label htmlFor={`guestEmail${index}`} className="block text-sm font-medium text-white">
-                              Email
-                            </label>
-                            <input
-                              id={`guestEmail${index}`}
-                              type="email"
-                              name={`guests[${index}].email`}
-                              placeholder="Enter email address"
-                              required
-                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                            />
-                          </div>
-                        </div>
+                        <GuestFormFields
+                          key={index}
+                          index={index}
+                          title="Guest"
+                          fields={stagFields.map(field => ({
+                            ...field,
+                            name: field.name(index)
+                          }))}
+                          layout="single"
+                        />
                       ))}
                       
                       {/* Guest Controls */}
@@ -208,117 +269,15 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                   ) : (
                     <div className="space-y-6">
                       {[...Array(guestCount)].map((_, index) => (
-                        <div key={index} className="space-y-4 p-6 bg-white/5 rounded-xl">
-                          <h3 className="text-white font-futura underline font-medium">Couple {index + 1}</h3>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <label htmlFor={`maleName${index}`} className="block text-sm font-medium text-white">
-                                Male Name
-                              </label>
-                              <input
-                                id={`maleName${index}`}
-                                type="text"
-                                name={`couples[${index}].male.name`}
-                                required
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <label htmlFor={`femaleName${index}`} className="block text-sm font-medium text-white">
-                                Female Name
-                              </label>
-                              <input
-                                id={`femaleName${index}`}
-                                type="text"
-                                name={`couples[${index}].female.name`}
-                                required
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                              />
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <label htmlFor={`maleAge${index}`} className="block text-sm font-medium text-white">
-                                Male Age
-                              </label>
-                              <input
-                                id={`maleAge${index}`}
-                                type="number"
-                                name={`couples[${index}].male.age`}
-                                required
-                                min="18"
-                                max="100"
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <label htmlFor={`femaleAge${index}`} className="block text-sm font-medium text-white">
-                                Female Age
-                              </label>
-                              <input
-                                id={`femaleAge${index}`}
-                                type="number"
-                                name={`couples[${index}].female.age`}
-                                required
-                                min="18"
-                                max="100"
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                              />
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <label htmlFor={`maleMobile${index}`} className="block text-sm font-medium text-white">
-                                Male Mobile Number
-                              </label>
-                              <input
-                                id={`maleMobile${index}`}
-                                type="tel"
-                                name={`couples[${index}].male.mobile`}
-                                required
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <label htmlFor={`femaleMobile${index}`} className="block text-sm font-medium text-white">
-                                Female Mobile Number
-                              </label>
-                              <input
-                                id={`femaleMobile${index}`}
-                                type="tel"
-                                name={`couples[${index}].female.mobile`}
-                                required
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                              />
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <label htmlFor={`maleEmail${index}`} className="block text-sm font-medium text-white">
-                                Male Email
-                              </label>
-                              <input
-                                id={`maleEmail${index}`}
-                                type="email"
-                                name={`couples[${index}].male.email`}
-                                required
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <label htmlFor={`femaleEmail${index}`} className="block text-sm font-medium text-white">
-                                Female Email
-                              </label>
-                              <input
-                                id={`femaleEmail${index}`}
-                                type="email"
-                                name={`couples[${index}].female.email`}
-                                required
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white/20"
-                              />
-                            </div>
-                          </div>
-                        </div>
+                        <GuestFormFields
+                          key={index}
+                          index={index}
+                          title="Couple"
+                          fields={coupleFields.map(field => ({
+                            ...field,
+                            name: field.name(index)
+                          }))}
+                        />
                       ))}
 
                       {/* Couple Controls */}
