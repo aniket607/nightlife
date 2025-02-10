@@ -16,13 +16,17 @@ interface GuestFormFieldsProps {
   title: string;
   fields: GuestField[];
   layout?: 'single' | 'double';
+  errors?: Record<string, string>;
+  onFieldChange?: (name: string, value: string, type: string, required?: boolean) => void;
 }
 
 export function GuestFormFields({ 
   index, 
   title, 
   fields,
-  layout = 'double'
+  layout = 'double',
+  errors = {},
+  onFieldChange
 }: GuestFormFieldsProps) {
   return (
     <div className="space-y-4 p-6 bg-white/5 rounded-xl">
@@ -46,6 +50,8 @@ export function GuestFormFields({
                   required={field.required}
                   min={field.min}
                   max={field.max}
+                  error={errors[field.name]}
+                  onChange={(e) => onFieldChange?.(field.name, e.target.value, field.type, field.required)}
                 />
               ))}
             </div>
@@ -63,6 +69,8 @@ export function GuestFormFields({
               required={field.required}
               min={field.min}
               max={field.max}
+              error={errors[field.name]}
+              onChange={(e) => onFieldChange?.(field.name, e.target.value, field.type)}
             />
           ))
         )}

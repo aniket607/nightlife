@@ -4,6 +4,8 @@ import { FormToggle } from '@/components/ui/form-toggle'
 import { GuestFormFields } from '@/components/ui/guest-form-fields'
 import { useState, use, useTransition, useRef } from 'react'
 import handleGuestlistSubmit from '@/actions/handleGuestlistSubmit';
+import { validateField } from '@/utils/form-validation';
+import { Plus, X , Trash} from 'lucide-react';
 
 const stagFields = [
   {
@@ -22,7 +24,7 @@ const stagFields = [
     placeholder: 'Must be 18 or older',
     required: true,
     min: '18',
-    max: '100'
+    max: '80'
   },
   {
     id: 'guestMobile',
@@ -67,7 +69,7 @@ const coupleFields = [
     placeholder: 'Must be 18 or older',
     required: true,
     min: '18',
-    max: '100'
+    max: '80'
   },
   {
     id: 'femaleAge',
@@ -77,7 +79,7 @@ const coupleFields = [
     placeholder: 'Must be 18 or older',
     required: true,
     min: '18',
-    max: '100'
+    max: '80'
   },
   {
     id: 'maleMobile',
@@ -108,10 +110,10 @@ const coupleFields = [
     label: 'Female Email',
     type: 'email',
     name: (index: number) => `couples[${index}].female.email`,
-    placeholder: 'Enter email address (optional)'
+    placeholder: 'Enter email address (optional)',
+    required: false
   }
 ];
-import { Plus, X , Trash} from 'lucide-react';
 
 interface PageProps {
   searchParams: Promise<{ eventId?: string }>
@@ -121,9 +123,26 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
   const [formType, setFormType] = useState<'stag' | 'couple'>('stag');
   const [guestCount, setGuestCount] = useState(1);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
   const { eventId } = use(searchParams);
   const formRef = useRef<HTMLFormElement>(null);
+
+  const handleFieldChange = (name: string, value: string, type: string, required: boolean = true) => {
+    const result = validateField(value, type, required);
+    if (!result.isValid) {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: result.error!
+      }));
+    } else {
+      setFormErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
 
   const maxGuests = formType === 'stag' ? 3 : 2;
   
@@ -139,7 +158,62 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
     }
   };
 
+  //Client Side form data Validations
+  const validateForm = (formData: FormData): boolean => {
+    const errors: Record<string, string> = {};
+
+    for (let i = 0; i < guestCount; i++) {
+      if (formType === 'stag') {
+        // Validate stag fields
+        const nameResult = validateField(formData.get(`guests[${i}].name`) as string, 'name');
+        const ageResult = validateField(formData.get(`guests[${i}].age`) as string, 'age');
+        const mobileResult = validateField(formData.get(`guests[${i}].mobile`) as string, 'tel');
+        const emailResult = validateField(formData.get(`guests[${i}].email`) as string, 'email');
+
+        if (!nameResult.isValid) errors[`guests[${i}].name`] = nameResult.error!;
+        if (!ageResult.isValid) errors[`guests[${i}].age`] = ageResult.error!;
+        if (!mobileResult.isValid) errors[`guests[${i}].mobile`] = mobileResult.error!;
+        if (!emailResult.isValid) errors[`guests[${i}].email`] = emailResult.error!;
+      } else {
+        // Validate couple fields
+        const maleNameResult = validateField(formData.get(`couples[${i}].male.name`) as string, 'name');
+        const femaleNameResult = validateField(formData.get(`couples[${i}].female.name`) as string, 'name');
+        const maleAgeResult = validateField(formData.get(`couples[${i}].male.age`) as string, 'age');
+        const femaleAgeResult = validateField(formData.get(`couples[${i}].female.age`) as string, 'age');
+        const maleMobileResult = validateField(formData.get(`couples[${i}].male.mobile`) as string, 'tel');
+        const femaleMobileResult = validateField(formData.get(`couples[${i}].female.mobile`) as string, 'tel');
+        const maleEmailResult = validateField(formData.get(`couples[${i}].male.email`) as string, 'email');
+        const femaleEmailResult = validateField(formData.get(`couples[${i}].female.email`) as string, 'email', false);
+
+        if (!maleNameResult.isValid) errors[`couples[${i}].male.name`] = maleNameResult.error!;
+        if (!femaleNameResult.isValid) errors[`couples[${i}].female.name`] = femaleNameResult.error!;
+        if (!maleAgeResult.isValid) errors[`couples[${i}].male.age`] = maleAgeResult.error!;
+        if (!femaleAgeResult.isValid) errors[`couples[${i}].female.age`] = femaleAgeResult.error!;
+        if (!maleMobileResult.isValid) errors[`couples[${i}].male.mobile`] = maleMobileResult.error!;
+        if (!femaleMobileResult.isValid) errors[`couples[${i}].female.mobile`] = femaleMobileResult.error!;
+        if (!maleEmailResult.isValid) errors[`couples[${i}].male.email`] = maleEmailResult.error!;
+        if (!femaleEmailResult.isValid) errors[`couples[${i}].female.email`] = femaleEmailResult.error!;
+      }
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  //Form Submit Handler
   const handleSubmit = async (formData: FormData) => {
+    // Reset form errors
+    setFormErrors({});
+
+    // Validate form
+    if (!validateForm(formData)) {
+      setNotification({
+        message: 'Please fix the errors in the form',
+        type: 'error'
+      });
+      return;
+    }
+
     startTransition(async () => {
       try {
         const response = await handleGuestlistSubmit(formData);
@@ -221,8 +295,11 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                           title="Guest"
                           fields={stagFields.map(field => ({
                             ...field,
-                            name: field.name(index)
+                            name: field.name(index),
+                            type: field.type
                           }))}
+                          errors={formErrors}
+                          onFieldChange={handleFieldChange}
                           layout="single"
                         />
                       ))}
@@ -275,8 +352,11 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                           title="Couple"
                           fields={coupleFields.map(field => ({
                             ...field,
-                            name: field.name(index)
+                            name: field.name(index),
+                            type: field.type
                           }))}
+                          errors={formErrors}
+                          onFieldChange={handleFieldChange}
                         />
                       ))}
 
