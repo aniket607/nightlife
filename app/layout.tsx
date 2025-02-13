@@ -6,8 +6,8 @@ import { Navigation } from "@/components/navigation";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next.js App with Tubelight Navbar",
-  description: "A modern Next.js application with a beautiful tubelight navbar",
+  title: "Nightclub Explorer",
+  description: "Discover and explore nightclubs and events in your city. Find event details, artist lineups, ticket prices and register for guestlists.",
 };
 
 export default function RootLayout({
