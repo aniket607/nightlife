@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { cn } from "@/lib/utils";
 import { useRouter } from 'next/navigation'
+import parse from "html-react-parser";
 
 interface EventCardProps {
   eventId: number
@@ -158,7 +159,9 @@ export function EventCard({
 
             {/* Title & Description */}
             <h3 className="text-lg md:text-2xl font-bold text-white mb-2">{eventName}</h3>
-            <p className="text-sm md:text-base text-[#9ca3af] mb-4 line-clamp-3">{eventDescription}</p>
+            <div className="text-sm md:text-base text-[#9ca3af] mb-4 line-clamp-3">
+              {eventDescription ? parse(eventDescription) : "No description available"}
+            </div>
 
             {/* Venue */}
             <div className="flex items-center gap-2">

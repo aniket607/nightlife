@@ -6,6 +6,7 @@ import Image from 'next/image'
 import JoinGLBtn from '@/components/join-gl-btn'
 import CopyAddressBtn from '@/components/copy-address-btn'
 import OpenInMapsBtn from '@/components/open-in-maps-btn'
+import parse from "html-react-parser";
 
 interface PageProps {
   params: {
@@ -142,9 +143,9 @@ export default async function EventPage({ params }: PageProps) {
               {/* About Section */}
               <div className="space-y-4">
                 <h2 className="text-2xl font-semibold font-poppins">About</h2>
-                <p className="text-gray-300 leading-relaxed">
-                  {eventDetails.eventDescription || 'No description available.'}
-                </p>
+                <div className="text-gray-300 leading-relaxed">
+                  {eventDetails.eventDescription ? parse(eventDetails.eventDescription) : "No description available"}
+                </div>
               </div>
               {/* Divider */}
               <div className='h-[1px] w-full bg-white/20'/>

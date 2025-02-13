@@ -1,20 +1,6 @@
 import Image from "next/image";
 import OpenInMapsBtn from "./open-in-maps-btn";
-
-interface Event {
-  createdAt: Date;
-  userId: string;
-  eventId: number;
-  eventName: string;
-  eventDescription: string | null;
-  eventDate: Date;
-  eventTime: Date;
-  stagGlCount: number;
-  featuredEvent: boolean | null;
-}
-
 interface VenueData {
-  events: Event[];
   venueImgUrl: string | null;
   venueName: string | null;
   address: string | null;
