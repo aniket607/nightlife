@@ -21,14 +21,28 @@ interface SubmissionResponse {
 // Database operations for stag guestlist
 const createStagGuestlist = async (eventId: number, guests: GuestData[]): Promise<boolean> => {
   try {
-    await prisma.stagGuestlist.createMany({
-      data: guests.map(guest => ({
-        eventId,
-        guestName: guest.name,
-        guestAge: guest.age,
-        guestMobile: guest.mobile,
-        guestEmail: guest.email
-      }))
+    // Use transaction to ensure both operations complete or none do
+    await prisma.$transaction(async (tx) => {
+      // Create the guestlist entries
+      await tx.stagGuestlist.createMany({
+        data: guests.map(guest => ({
+          eventId,
+          guestName: guest.name,
+          guestAge: guest.age,
+          guestMobile: guest.mobile,
+          guestEmail: guest.email
+        }))
+      });
+
+      // Update the event's stagGlCount
+      await tx.event.update({
+        where: { eventId },
+        data: {
+          stagGlCount: {
+            decrement: guests.length
+          }
+        }
+      });
     });
     return true;
   } catch (error) {
@@ -40,18 +54,32 @@ const createStagGuestlist = async (eventId: number, guests: GuestData[]): Promis
 // Database operations for couple guestlist
 const createCoupleGuestlist = async (eventId: number, couples: CoupleData[]): Promise<boolean> => {
   try {
-    await prisma.coupleGuestlist.createMany({
-      data: couples.map(couple => ({
-        eventId,
-        maleName: couple.male.name,
-        maleAge: couple.male.age,
-        maleMobile: couple.male.mobile,
-        maleEmail: couple.male.email,
-        femaleName: couple.female.name,
-        femaleAge: couple.female.age,
-        femaleMobile: couple.female.mobile,
-        femaleEmail: couple.female.email
-      }))
+    // Use transaction to ensure both operations complete or none do
+    await prisma.$transaction(async (tx) => {
+      // Create the guestlist entries
+      await tx.coupleGuestlist.createMany({
+        data: couples.map(couple => ({
+          eventId,
+          maleName: couple.male.name,
+          maleAge: couple.male.age,
+          maleMobile: couple.male.mobile,
+          maleEmail: couple.male.email,
+          femaleName: couple.female.name,
+          femaleAge: couple.female.age,
+          femaleMobile: couple.female.mobile,
+          femaleEmail: couple.female.email
+        }))
+      });
+
+      // Update the event's coupleGlCount
+      await tx.event.update({
+        where: { eventId },
+        data: {
+          coupleGlCount: {
+            decrement: couples.length
+          }
+        }
+      });
     });
     return true;
   } catch (error) {
