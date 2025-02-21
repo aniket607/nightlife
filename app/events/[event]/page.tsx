@@ -81,17 +81,19 @@ export default async function EventPage({ params }: PageProps) {
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-36 pb-20">
+    <div className="min-h-screen w-full bg-black">
+      <div className="relative w-full max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-36 pb-20">
         <div className="flex flex-col md:flex-row md:gap-8">
           {/* Left section - scrollable on mobile, fixed on desktop */}
           <div className="w-full md:w-[350px] md:fixed md:top-36">
-            <div className="max-w-[330px] mx-auto md:max-w-none rounded-lg overflow-hidden w-full md:w-[350px] aspect-[4/5] md:h-[400px] relative">
+            <div className="max-w-[330px] mx-auto md:max-w-none rounded-lg overflow-hidden w-full md:w-[350px] aspect-[4/5] md:h-[400px] relative bg-zinc-900">
+              <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-zinc-800 to-zinc-900" />
               <Image
                 src={eventDetails.eventImgUrl!}
                 alt={eventDetails.eventName}
                 fill
-                sizes="(max-width: 768px) 100vw, 350px"
-                className="object-cover"
+                sizes="(max-width: 768px) 330px, 350px"
+                className="object-cover rounded-lg"
                 priority
               />
             </div>
@@ -154,39 +156,24 @@ export default async function EventPage({ params }: PageProps) {
               <div className="space-y-4">
                 <h2 className="text-2xl font-semibold font-poppins">Artist Lineup</h2>
                 <div className="space-y-4">
-                  {/* Artist slots */}
-                  <div className="flex items-center gap-3 group hover:bg-white/5 rounded-lg transition-colors">
-                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                      </svg>
+                  {eventDetails.artists.length > 0 ? (
+                    eventDetails.artists.map(({ artist }) => (
+                      <div key={artist.id} className="flex items-center gap-3 group hover:bg-white/5 rounded-lg transition-colors p-2">
+                        <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                          <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-medium group-hover:text-white transition-colors">{artist.name}</h3>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center text-gray-400 py-4">
+                      No artists announced yet
                     </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium group-hover:text-white transition-colors">Bob Corsi & Kybbe</h3>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 group hover:bg-white/5 rounded-lg transition-colors">
-                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium group-hover:text-white transition-colors">Elvis Delmar</h3>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 group hover:bg-white/5 rounded-lg transition-colors">
-                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium group-hover:text-white transition-colors">Big Mountain County</h3>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
 
@@ -211,5 +198,6 @@ export default async function EventPage({ params }: PageProps) {
           </div>
         </div>
       </div>
+    </div>
   );
 }
