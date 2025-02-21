@@ -2,10 +2,50 @@
 
 import { FormToggle } from '@/components/ui/form-toggle'
 import { GuestFormFields } from '@/components/ui/guest-form-fields'
-import { useState, use, useTransition, useRef } from 'react'
+import { useState, useEffect, useTransition, useRef, use } from 'react'
 import handleGuestlistSubmit from '@/actions/handleGuestlistSubmit';
 import { validateField } from '@/utils/form-validation';
 import { Plus, X , Trash} from 'lucide-react';
+import fetchEventById from '@/actions/fetchEventById';
+import type { Event } from '@prisma/client';
+
+interface StagGuestlist {
+  glId: number;
+  guestName: string;
+  guestAge: number;
+  guestMobile: string;
+  guestEmail: string;
+  eventId: number;
+}
+
+interface CoupleGuestlist {
+  glId: number;
+  maleName: string;
+  femaleName: string;
+  maleAge: number;
+  femaleAge: number;
+  maleMobile: string;
+  femaleMobile: string;
+  maleEmail: string;
+  femaleEmail: string | null;
+  eventId: number;
+}
+
+interface ExtendedEvent extends Event {
+  venue: {
+    venueName: string;
+    address: string;
+    locationUrl: string | null;
+  };
+  artists: Array<{
+    artist: {
+      id: number;
+      name: string;
+    };
+  }>;
+  stagGuestlist: StagGuestlist[];
+  coupleGuestlist: CoupleGuestlist[];
+}
 
 const stagFields = [
   {
@@ -120,13 +160,64 @@ interface PageProps {
 }
 
 export default function JoinGuestlistPage({ searchParams }: PageProps) {
+  const params = use(searchParams);
   const [formType, setFormType] = useState<'stag' | 'couple'>('stag');
   const [guestCount, setGuestCount] = useState(1);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
-  const { eventId } = use(searchParams);
+  const [eventDetails, setEventDetails] = useState<ExtendedEvent | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      if (!params.eventId) return;
+      try {
+        setIsLoading(true);
+        const event = await fetchEventById(parseInt(params.eventId));
+        setEventDetails(event as ExtendedEvent);
+      } catch (error) {
+        console.error('Error fetching event:', error);
+        setNotification({
+          type: 'error',
+          message: 'Failed to load event details'
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvent();
+  }, [params.eventId]);
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto mt-24 px-4 text-center">
+        <div className="text-white space-y-4">
+          <div className="w-12 h-12 border-4 border-white/20 border-t-white/80 rounded-full animate-spin mx-auto"/>
+          <h2 className="text-xl">Loading event details...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  if (!eventDetails) {
+    return (
+      <div className="container mx-auto mt-24 px-4 text-center">
+        <h1 className="text-2xl text-white">Event not found</h1>
+      </div>
+    );
+  }
+
+  // Validate if slots are available
+  const validateSlots = (type: 'stag' | 'couple', count: number): boolean => {
+    if (type === 'stag') {
+      return count <= eventDetails.stagGlCount;
+    } else {
+      return eventDetails.coupleGl && count <= (eventDetails.coupleGlCount || 0);
+    }
+  };
 
   const handleFieldChange = (name: string, value: string, type: string, required: boolean = true) => {
     const result = validateField(value, type, required);
@@ -144,11 +235,16 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
     }
   };
 
-  const maxGuests = formType === 'stag' ? 3 : 2;
+  const maxGuests = formType === 'stag' ? Math.min(3, eventDetails.stagGlCount) : Math.min(2, eventDetails.coupleGlCount || 0);
   
   const handleAddGuest = () => {
-    if (guestCount < maxGuests) {
+    if (guestCount < maxGuests && validateSlots(formType, guestCount + 1)) {
       setGuestCount(prev => prev + 1);
+    } else {
+      setNotification({
+        type: 'error',
+        message: `No more ${formType} slots available`
+      });
     }
   };
 
@@ -205,6 +301,16 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
     // Reset form errors
     setFormErrors({});
 
+    // Validate slots availability
+    const submissionCount = parseInt(formData.get('guestCount') as string);
+    if (!validateSlots(formType, submissionCount)) {
+      setNotification({
+        message: `Not enough ${formType} slots available`,
+        type: 'error'
+      });
+      return;
+    }
+
     // Validate form
     if (!validateForm(formData)) {
       setNotification({
@@ -240,6 +346,17 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
     <div className="container mx-auto mt-24 px-4 relative z-10">
       <h1 className="text-4xl font-bold font-futura text-white text-center mb-12">Join Guestlist</h1>
       
+      {/* Display available slots */}
+      <div className="text-center mb-8">
+        <p className="text-white/80">
+          Available Slots: 
+          <span className="ml-2 text-white font-semibold">{eventDetails.stagGlCount} Stag</span>
+          {eventDetails.coupleGl && (
+            <span className="ml-2 text-white font-semibold">• {eventDetails.coupleGlCount} Couple</span>
+          )}
+        </p>
+      </div>
+
       {/*Confirmation Popup */}
       {notification && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -267,10 +384,19 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
         <div className="bg-gradient-to-br from-slate-900/60 via-zinc-900/80 to-slate-900/90 backdrop-blur-xl rounded-3xl p-2 md:p-8 border border-white/10 shadow-xl">
           <FormToggle 
             onToggle={(value) => {
+              // Only allow switching to couple if coupleGl is true
+              if (value === 'couple' && !eventDetails.coupleGl) {
+                setNotification({
+                  message: 'Couple entries are not available for this event',
+                  type: 'error'
+                });
+                return;
+              }
               setFormType(value);
               setGuestCount(1);
             }} 
             className="mb-6"
+            disableCouple={!eventDetails.coupleGl}
           />
           
           {/* Form Container */}
@@ -280,10 +406,11 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                 <form ref={formRef} onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   const formData = new FormData(e.currentTarget);
+                  formData.set('eventId', params.eventId || '0');
                   handleSubmit(formData);
                 }}>
                   <input type="hidden" name="formType" value={formType} />
-                  <input type="hidden" name="eventId" value={eventId} />
+                  <input type="hidden" name="eventId" value={params.eventId} />
                   <input type="hidden" name="guestCount" value={guestCount} />
                   
                   {formType === 'stag' ? (

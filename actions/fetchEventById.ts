@@ -13,7 +13,9 @@ export default async function fetchEventById(eventId: number) {
                 include: {
                     artist: true
                 }
-            }
+            },
+            stagGuestlist: true,
+            coupleGuestlist: true
         }
     });
     return event;
