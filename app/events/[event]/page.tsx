@@ -9,9 +9,9 @@ import OpenInMapsBtn from '@/components/open-in-maps-btn'
 import parse from "html-react-parser";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     event: string
-  }
+  }>
 }
 
 interface ParsedEventSlug {
@@ -27,8 +27,8 @@ export default async function EventPage({ params }: PageProps) {
   };
 
   // Parse the incoming slug
-  const incomingParams = await params;
-  const { eventId } = parseEventSlug(incomingParams.event);          
+  const resolvedParams = await params;
+  const { eventId } = parseEventSlug(resolvedParams.event);
   
   // Fetch event details
   const eventDetails = await fetchEventById(parseInt(eventId));

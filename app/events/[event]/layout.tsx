@@ -7,9 +7,9 @@ import fetchEventById from '@/actions/fetchEventById'
 
 interface LayoutProps {
   children: ReactNode
-  params: {
+  params: Promise<{
     event: string
-  }
+  }>
 }
 
 export default async function EventLayout({ children, params }: LayoutProps) {
@@ -19,8 +19,8 @@ export default async function EventLayout({ children, params }: LayoutProps) {
   };
 
   // Parse the incoming slug
-  const incomingParams = await params;
-  const { eventId } = parseEventSlug(incomingParams.event);
+  const { event } = await params;
+  const { eventId } = parseEventSlug(event);
 
   // Fetch event details
   const eventDetails = await fetchEventById(parseInt(eventId))

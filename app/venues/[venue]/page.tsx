@@ -4,12 +4,12 @@ import { VenueLeftSection } from "@/components/venueLeftSection";
 import { VenueRightSection } from "@/components/venueRightSection";
 
 interface PageProps {
-  params: { venue: string }
+  params: Promise<{ venue: string }>
 }
 
 export default async function VenuePage({ params }: PageProps) {
   // Await the params before using them
-  const { venue } = await Promise.resolve(params);
+  const { venue } = await params;
   const venueName = decodeURIComponent(venue);
   const venueData = await fetchEventsOfVenue(venueName);
 
