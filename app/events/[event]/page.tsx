@@ -143,7 +143,7 @@ export default async function EventPage({ params }: PageProps) {
               {/* About Section */}
               <div className="space-y-4">
                 <h2 className="text-2xl font-semibold font-poppins">About</h2>
-                <div className="text-gray-300 leading-relaxed">
+                <div className="prose prose-lg prose-invert max-w-none text-gray-300 leading-relaxed">
                   {eventDetails.eventDescription ? parse(eventDetails.eventDescription) : "No description available"}
                 </div>
               </div>

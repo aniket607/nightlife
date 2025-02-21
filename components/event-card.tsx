@@ -159,7 +159,7 @@ export function EventCard({
 
             {/* Title & Description */}
             <h3 className="text-lg md:text-2xl font-bold text-white mb-2">{eventName}</h3>
-            <div className="text-sm md:text-base text-[#9ca3af] mb-4 line-clamp-3">
+            <div className="prose prose-sm md:prose-base prose-invert max-w-none text-[#9ca3af] mb-4 line-clamp-3">
               {eventDescription ? parse(eventDescription) : "No description available"}
             </div>
 
