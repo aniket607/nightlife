@@ -64,7 +64,7 @@ class Noise {
     seed = Math.floor(seed)
     if (seed < 256) seed |= seed << 8
     for (let i = 0; i < 256; i++) {
-      let v = i & 1 ? this.p[i] ^ (seed & 255) : this.p[i] ^ ((seed >> 8) & 255)
+      const v = i & 1 ? this.p[i] ^ (seed & 255) : this.p[i] ^ ((seed >> 8) & 255)
       this.perm[i] = this.perm[i + 256] = v
       this.gradP[i] = this.gradP[i + 256] = this.grad3[v % 12]
     }
@@ -98,6 +98,21 @@ class Noise {
   }
 }
 
+interface Point {
+  x: number;
+  y: number;
+  wave: {
+    x: number;
+    y: number;
+  };
+  cursor: {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+  };
+}
+
 export function Waves({
   lineColor = "rgba(255, 255, 255, 0.3)",
   backgroundColor = "transparent",
@@ -117,7 +132,7 @@ export function Waves({
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
   const boundingRef = useRef({ width: 0, height: 0, left: 0, top: 0 })
   const noiseRef = useRef(new Noise(Math.random()))
-  const linesRef = useRef<any[]>([])
+  const linesRef = useRef<Point[][]>([])
   const mouseRef = useRef({
     x: -10,
     y: 0,
@@ -211,7 +226,7 @@ export function Waves({
       })
     }
 
-    function moved(point: any, withCursor = true) {
+    function moved(point: Point, withCursor = true) {
       const x = point.x + point.wave.x + (withCursor ? point.cursor.x : 0)
       const y = point.y + point.wave.y + (withCursor ? point.cursor.y : 0)
       return { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 }
