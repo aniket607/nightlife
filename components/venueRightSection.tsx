@@ -54,7 +54,7 @@ export function VenueRightSection({ eventsData, venue }: VenueRightSectionProps)
                     <AccordionTrigger className="flex flex-1 items-center justify-between py-4 text-xl font-bold text-white hover:text-white/80 px-5">
                         PAST EVENTS
                     </AccordionTrigger>
-                    <AccordionContent className="flex justify-center">
+                    <AccordionContent className="flex justify-center px-3">
                         <div className="flex flex-col gap-10 pt-6">
                             {pastEvents.map((pastEvent) => (
                                 <div key={pastEvent.eventId}>
@@ -77,7 +77,7 @@ export function VenueRightSection({ eventsData, venue }: VenueRightSectionProps)
                     <AccordionTrigger className="flex flex-1 items-center justify-between py-4 text-xl font-bold text-white hover:text-white/80 px-5">
                         UPCOMING EVENTS
                     </AccordionTrigger>
-                    <AccordionContent className="flex justify-center">
+                    <AccordionContent className="flex justify-center px-3">
                         <div className="flex flex-col gap-10 pt-6">
                             {upcomingEvents.map((upcomingEvent) => (
                                 <div key={upcomingEvent.eventId}>
