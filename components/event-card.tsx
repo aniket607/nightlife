@@ -64,8 +64,9 @@ export function EventCard({
 
   const handleViewEventDetails = (eventId: number) => {
     
-    // Create a URL-friendly slug with just eventId and venueName
-    const eventSlug = `${eventId}-${encodeURIComponent(eventName)}`;
+    // Remove spaces and special characters from event name
+    const cleanEventName = eventName.replace(/\s+/g, '');
+    const eventSlug = `${eventId}-${cleanEventName}`;
     
     router.push(`/events/${eventSlug}/`);
 
