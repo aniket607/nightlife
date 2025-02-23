@@ -380,8 +380,8 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto mb-16">
-        <div className="bg-gradient-to-br from-slate-900/60 via-zinc-900/80 to-slate-900/90 backdrop-blur-xl rounded-3xl p-2 md:p-8 border border-white/10 shadow-xl">
+      <div className="max-w-4xl mx-auto flow-root pb-20">
+        <div className="bg-gradient-to-br from-slate-900/60 via-zinc-900/80 to-slate-900/90 backdrop-blur-xl rounded-3xl p-2 md:p-8 border border-white/10 shadow-xl mb-8">
           <FormToggle 
             onToggle={(value) => {
               // Only allow switching to couple if coupleGl is true
