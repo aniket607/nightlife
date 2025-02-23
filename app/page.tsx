@@ -4,6 +4,7 @@ import { ExploreButton } from "@/components/ui/explore-button"
 import { EventCard } from "@/components/event-card"
 import Link from "next/link"
 import fetchFeatured from "@/actions/fetchFeatured"
+import { FooterButton } from "@/components/footer-button"
 
 export default async function Home() {
   const { featuredVenues, featuredEvents } = await fetchFeatured();
@@ -87,7 +88,7 @@ export default async function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section className="relative py-36 px-6" style={{ zIndex: 3 }}>
+      <section id="how-it-works" className="relative py-36 px-6" style={{ zIndex: 3 }}>
         <div className="relative mx-auto max-w-7xl">
           {/* Section Header */}
           <div className="text-center mb-20">
@@ -224,7 +225,8 @@ export default async function Home() {
               <h3 className="text-lg font-semibold text-white mb-4">Services</h3>
               <ul className="space-y-2">
                 <li className="text-[#9ca3af] hover:text-white transition-colors">
-                  <Link href="/guestlist">Guestlist Entry</Link>
+                  {/* <Link href="/guestlist">Guestlist Entry</Link> */}
+                    <FooterButton elementId="how-it-works" buttonText="Guestlist Entry" />
                 </li>
                 <li className="text-[#9ca3af]/60 flex items-center gap-2">
                   VIP Tables
