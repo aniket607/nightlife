@@ -26,7 +26,7 @@ export default async function EventsPage() {
       </div>
       
       {/* Content */}
-      <div className="relative z-10 py-20 md:py-32 px-2 md:px-4 flex flex-col items-center">
+      <div className="relative z-10 py-20 md:py-32 md:px-4 flex flex-col items-center">
         <div className="text-center mb-16 px-2">
           <h2 className="text-4xl font-bold mb-4 text-white">Discover Events</h2>
           <p className="text-xl text-[#9ca3af]">Discover the hottest events in your City</p>
@@ -39,7 +39,7 @@ export default async function EventsPage() {
               <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
                 PAST EVENTS
               </AccordionTrigger>
-              <AccordionContent className="flex justify-center">
+              <AccordionContent className="flex justify-center px-3">
                 <div className="flex flex-col gap-10 pt-6">
                   {pastEvents.map((event) => (
                     <div key={event.eventId}>
@@ -57,7 +57,7 @@ export default async function EventsPage() {
               <AccordionTrigger className="text-xl font-bold text-white hover:text-white/80 px-5">
                 UPCOMING EVENTS
               </AccordionTrigger>
-              <AccordionContent className="flex justify-center">
+              <AccordionContent className="flex justify-center px-3">
                 <div className="flex flex-col gap-10 pt-6">
                   {upcomingEvents.map((event) => (
                     <div key={event.eventId}>
