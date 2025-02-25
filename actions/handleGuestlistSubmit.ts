@@ -1,5 +1,6 @@
 'use server'
 import prisma from '@/lib/prisma'
+import sendConfirmation from './sendConfirmation'
 
 interface GuestData {
   name: string
@@ -109,7 +110,49 @@ export default async function handleGuestlistSubmit(formData: FormData): Promise
       
       //await db entry for stags
       const success = await createStagGuestlist(parseInt(eventId), guests);
-      
+      if(success) {
+        // Get the event details first
+        const event = await prisma.event.findUnique({
+          where: { eventId: parseInt(eventId) },
+          include: { venue: true }
+        });
+
+        if (!event) {
+          throw new Error('Event not found');
+        }
+
+        console.log('Sending emails to stag guests:', guests.length);
+
+        // Send confirmation emails using the form data guests array
+        const emailPromises = guests.map((guest, index) => {
+          // Add delay of 600ms between each send to respect rate limit
+          return new Promise(resolve => setTimeout(resolve, index * 600))
+            .then(() => {
+              console.log('Attempting to send email to stag:', guest.email);
+              return sendConfirmation(
+                'stag',
+                guests,
+                event,
+                guest.email
+              ).then(result => {
+                if (result.success) {
+                  console.log(`✅ Email sent successfully to ${guest.email}`);
+                  return true;
+                } else {
+                  console.error(`❌ Failed to send email to ${guest.email}:`, result.error);
+                  return false;
+                }
+              }).catch(error => {
+                console.error(`❌ Exception sending email to ${guest.email}:`, error);
+                return false;
+              });
+            });
+        });
+
+        const results = await Promise.all(emailPromises);
+        const successCount = results.filter(Boolean).length;
+        console.log(`Email sending complete: ${successCount} successful out of ${emailPromises.length}`);
+      }
       if (!success) {
         return {
           success: false,
@@ -151,6 +194,55 @@ export default async function handleGuestlistSubmit(formData: FormData): Promise
           message: 'Failed to add couples to the guestlist. Please try again.'
         };
       }
+
+      // Get the event details
+      const event = await prisma.event.findUnique({
+        where: { eventId: parseInt(eventId) },
+        include: { venue: true }
+      });
+
+      if (!event) {
+        throw new Error('Event not found');
+      }
+
+      console.log('Sending emails to couples:', couples.length);
+
+      // Filter out empty emails and create a valid email list
+      const validEmails = couples.flatMap(couple => [
+        couple.male.email,
+        couple.female.email
+      ]).filter(email => email && email.trim() !== '');
+      
+      console.log('Sending emails to:', validEmails);
+      
+      const emailPromises = validEmails.map((email, index) => {
+        // Add delay of 600ms between each send to respect rate limit
+        return new Promise(resolve => setTimeout(resolve, index * 600))
+          .then(() => {
+            console.log('Attempting to send email to couple guest:', email);
+            return sendConfirmation(
+              'couple',
+              couples,
+              event,
+              email
+            ).then(result => {
+              if (result.success) {
+                console.log(`✅ Email sent successfully to ${email}`);
+                return true;
+              } else {
+                console.error(`❌ Failed to send email to ${email}:`, result.error);
+                return false;
+              }
+            }).catch(error => {
+              console.error(`❌ Exception sending email to ${email}:`, error);
+              return false;
+            });
+          });
+      });
+
+      const results = await Promise.all(emailPromises);
+      const successCount = results.filter(Boolean).length;
+      console.log(`Email sending complete: ${successCount} successful out of ${validEmails.length}`);
 
       return { 
         success: true, 
