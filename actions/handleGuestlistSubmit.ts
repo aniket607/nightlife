@@ -1,18 +1,7 @@
 'use server'
 import prisma from '@/lib/prisma'
 import sendConfirmation from './sendConfirmation'
-
-interface GuestData {
-  name: string
-  age: number
-  mobile: string
-  email: string
-}
-
-interface CoupleData {
-  male: GuestData
-  female: GuestData
-}
+import { GuestData, CoupleData } from '@/types/guestlist'
 
 interface SubmissionResponse {
   success: boolean

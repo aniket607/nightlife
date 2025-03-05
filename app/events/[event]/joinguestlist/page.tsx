@@ -10,28 +10,8 @@ import { validateField } from '@/utils/form-validation';
 import fetchEventById from '@/actions/fetchEventById';
 import type { Event } from '@prisma/client';
 import type { Notification } from '@/types/form';
+import type { StagGuestlist, CoupleGuestlist } from '@/types/guestlist';
 import { stagFields, coupleFields } from '@/constants/form-fields';
-interface StagGuestlist {
-  glId: number;
-  guestName: string;
-  guestAge: number;
-  guestMobile: string;
-  guestEmail: string;
-  eventId: number;
-}
-
-interface CoupleGuestlist {
-  glId: number;
-  maleName: string;
-  femaleName: string;
-  maleAge: number;
-  femaleAge: number;
-  maleMobile: string;
-  femaleMobile: string;
-  maleEmail: string;
-  femaleEmail: string | null;
-  eventId: number;
-}
 
 interface ExtendedEvent extends Event {
   venue: {
