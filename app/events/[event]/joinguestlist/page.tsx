@@ -10,6 +10,7 @@ import { validateField } from '@/utils/form-validation';
 import fetchEventById from '@/actions/fetchEventById';
 import type { Event } from '@prisma/client';
 import type { Notification } from '@/types/form';
+import { stagFields, coupleFields } from '@/constants/form-fields';
 interface StagGuestlist {
   glId: number;
   guestName: string;
@@ -48,113 +49,7 @@ interface ExtendedEvent extends Event {
   coupleGuestlist: CoupleGuestlist[];
 }
 
-const stagFields = [
-  {
-    id: 'guestName',
-    label: 'Guest Name',
-    type: 'text',
-    name: (index: number) => `guests[${index}].name`,
-    placeholder: 'Enter full name',
-    required: true
-  },
-  {
-    id: 'guestAge',
-    label: 'Age',
-    type: 'number',
-    name: (index: number) => `guests[${index}].age`,
-    placeholder: 'Must be 18 or older',
-    required: true,
-    min: '18',
-    max: '80'
-  },
-  {
-    id: 'guestMobile',
-    label: 'Mobile Number',
-    type: 'tel',
-    name: (index: number) => `guests[${index}].mobile`,
-    placeholder: '10 Digit Mobile number',
-    required: true
-  },
-  {
-    id: 'guestEmail',
-    label: 'Email',
-    type: 'email',
-    name: (index: number) => `guests[${index}].email`,
-    placeholder: 'Enter email address',
-    required: true
-  }
-];
-
-const coupleFields = [
-  {
-    id: 'maleName',
-    label: 'Male Name',
-    type: 'text',
-    name: (index: number) => `couples[${index}].male.name`,
-    placeholder: 'Enter full name',
-    required: true
-  },
-  {
-    id: 'femaleName',
-    label: 'Female Name',
-    type: 'text',
-    name: (index: number) => `couples[${index}].female.name`,
-    placeholder: 'Enter full name',
-    required: true
-  },
-  {
-    id: 'maleAge',
-    label: 'Male Age',
-    type: 'number',
-    name: (index: number) => `couples[${index}].male.age`,
-    placeholder: 'Must be 18 or older',
-    required: true,
-    min: '18',
-    max: '80'
-  },
-  {
-    id: 'femaleAge',
-    label: 'Female Age',
-    type: 'number',
-    name: (index: number) => `couples[${index}].female.age`,
-    placeholder: 'Must be 18 or older',
-    required: true,
-    min: '18',
-    max: '80'
-  },
-  {
-    id: 'maleMobile',
-    label: 'Male Mobile Number',
-    type: 'tel',
-    name: (index: number) => `couples[${index}].male.mobile`,
-    placeholder: 'Enter mobile number',
-    required: true
-  },
-  {
-    id: 'femaleMobile',
-    label: 'Female Mobile Number',
-    type: 'tel',
-    name: (index: number) => `couples[${index}].female.mobile`,
-    placeholder: 'Enter mobile number',
-    required: true
-  },
-  {
-    id: 'maleEmail',
-    label: 'Male Email',
-    type: 'email',
-    name: (index: number) => `couples[${index}].male.email`,
-    placeholder: 'Enter email address',
-    required: true
-  },
-  {
-    id: 'femaleEmail',
-    label: 'Female Email',
-    type: 'email',
-    name: (index: number) => `couples[${index}].female.email`,
-    placeholder: 'Enter email address (optional)',
-    required: false
-  }
-];
+// Form fields are imported directly from constants
 
 interface PageProps {
   searchParams: Promise<{ eventId?: string }>
