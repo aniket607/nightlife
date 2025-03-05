@@ -1,4 +1,4 @@
-import { FormInput } from './form-input';
+import { FormInput } from '../ui/form-input';
 
 interface GuestField {
   id: string;
