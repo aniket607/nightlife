@@ -235,6 +235,9 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
     });
   };
 
+  // Check if any slots are available
+  const noSlotsAvailable = eventDetails.stagGlCount === 0 && (!eventDetails.coupleGl || (eventDetails.coupleGlCount || 0) === 0);
+
   return (
     <div className="container mx-auto mt-24 px-4 relative z-10">
       <h1 className="text-4xl font-bold font-futura text-white text-center mb-12">Join Guestlist</h1>
@@ -260,68 +263,84 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
 
       <div className="max-w-4xl mx-auto flow-root pb-20">
         <div className="bg-gradient-to-br from-slate-900/60 via-zinc-900/80 to-slate-900/90 backdrop-blur-xl rounded-3xl p-2 md:p-8 border border-white/10 shadow-xl mb-8">
-          <FormToggle 
-            onToggle={(value) => {
-              // Only allow switching to couple if coupleGl is true
-              if (value === 'couple' && !eventDetails.coupleGl) {
-                showNotification('Couple entries are not available for this event', 'error');
-                return;
-              }
-              // Only allow switching to stag if stagGlCount > 0
-              if (value === 'stag' && eventDetails.stagGlCount === 0) {
-                showNotification('Stag entries are not available for this event', 'error');
-                return;
-              }
-              setFormType(value);
-              setGuestCount(1);
-            }} 
-            className="mb-6"
-            disableCouple={!eventDetails.coupleGl}
-            disableStag={eventDetails.stagGlCount === 0}
-          />
-          
-          {/* Form Container */}
-          <div className="mt-8 mx-auto">
-              {/* Form Content */}
-              <div className="relative px-6 py-5  ">
-                <form ref={formRef} onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                  e.preventDefault();
-                  const formData = new FormData(e.currentTarget);
-                  formData.set('eventId', params.eventId || '0');
-                  handleSubmit(formData);
-                }}>
-                  <input type="hidden" name="formType" value={formType} />
-                  <input type="hidden" name="eventId" value={params.eventId} />
-                  <input type="hidden" name="guestCount" value={guestCount} />
-                  
-                  {formType === 'stag' ? (
-                    <StagForm 
-                      guestCount={guestCount}
-                      maxGuests={maxGuests}
-                      stagFields={stagFields}
-                      formErrors={formErrors}
-                      isPending={isPending}
-                      handleFieldChange={handleFieldChange}
-                      handleAddGuest={handleAddGuest}
-                      handleRemoveGuest={handleRemoveGuest}
-                    />
-                  ) : (
-                    <CoupleForm 
-                      guestCount={guestCount}
-                      maxGuests={maxGuests}
-                      coupleFields={coupleFields}
-                      formErrors={formErrors}
-                      isPending={isPending}
-                      handleFieldChange={handleFieldChange}
-                      handleAddGuest={handleAddGuest}
-                      handleRemoveGuest={handleRemoveGuest}
-                    />
-                  )}
-                </form>
+          {noSlotsAvailable ? (
+            // Display message when no slots are available
+            <div className="text-center py-12">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-yellow-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <h2 className="text-2xl font-bold text-white mb-2">No Guestlist Slots Available</h2>
+              <p className="text-white/80 max-w-md mx-auto">
+                Sorry, all guestlist slots for this event have been filled. Please check back later or contact the venue for more information.
+              </p>
+            </div>
+          ) : (
+            // Show form when slots are available
+            <>
+              <FormToggle 
+                onToggle={(value) => {
+                  // Only allow switching to couple if coupleGl is true
+                  if (value === 'couple' && !eventDetails.coupleGl) {
+                    showNotification('Couple entries are not available for this event', 'error');
+                    return;
+                  }
+                  // Only allow switching to stag if stagGlCount > 0
+                  if (value === 'stag' && eventDetails.stagGlCount === 0) {
+                    showNotification('Stag entries are not available for this event', 'error');
+                    return;
+                  }
+                  setFormType(value);
+                  setGuestCount(1);
+                }} 
+                className="mb-6"
+                disableCouple={!eventDetails.coupleGl}
+                disableStag={eventDetails.stagGlCount === 0}
+              />
+              
+              {/* Form Container */}
+              <div className="mt-8 mx-auto">
+                  {/* Form Content */}
+                  <div className="relative px-6 py-5">
+                    <form ref={formRef} onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                      e.preventDefault();
+                      const formData = new FormData(e.currentTarget);
+                      formData.set('eventId', params.eventId || '0');
+                      handleSubmit(formData);
+                    }}>
+                      <input type="hidden" name="formType" value={formType} />
+                      <input type="hidden" name="eventId" value={params.eventId} />
+                      <input type="hidden" name="guestCount" value={guestCount} />
+                      
+                      {formType === 'stag' ? (
+                        <StagForm 
+                          guestCount={guestCount}
+                          maxGuests={maxGuests}
+                          stagFields={stagFields}
+                          formErrors={formErrors}
+                          isPending={isPending}
+                          handleFieldChange={handleFieldChange}
+                          handleAddGuest={handleAddGuest}
+                          handleRemoveGuest={handleRemoveGuest}
+                        />
+                      ) : (
+                        <CoupleForm 
+                          guestCount={guestCount}
+                          maxGuests={maxGuests}
+                          coupleFields={coupleFields}
+                          formErrors={formErrors}
+                          isPending={isPending}
+                          handleFieldChange={handleFieldChange}
+                          handleAddGuest={handleAddGuest}
+                          handleRemoveGuest={handleRemoveGuest}
+                        />
+                      )}
+                    </form>
+                  </div>
               </div>
-          </div>
+            </>
+          )}
         </div>
       </div>
-      </div>
+    </div>
   );
 }
