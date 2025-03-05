@@ -3,9 +3,9 @@ import { FormInput } from '../ui/form-input';
 interface GuestField {
   id: string;
   label: string;
-  type: string;
+  type?: string;
   name: string;
-  placeholder: string;
+  placeholder?: string;
   required?: boolean;
   min?: string;
   max?: string;
@@ -44,14 +44,14 @@ export function GuestFormFields({
                   key={field.id}
                   id={`${field.id}${index}`}
                   label={field.label}
-                  type={field.type}
+                  type={field.type || 'text'}
                   name={field.name}
                   placeholder={field.placeholder}
                   required={field.required}
                   min={field.min}
                   max={field.max}
                   error={errors[field.name]}
-                  onChange={(e) => onFieldChange?.(field.name, e.target.value, field.type, field.required)}
+                  onChange={(e) => onFieldChange?.(field.name, e.target.value, field.type || 'text', field.required)}
                 />
               ))}
             </div>
@@ -63,14 +63,14 @@ export function GuestFormFields({
               key={field.id}
               id={`${field.id}${index}`}
               label={field.label}
-              type={field.type}
+              type={field.type || 'text'}
               name={field.name}
               placeholder={field.placeholder}
               required={field.required}
               min={field.min}
               max={field.max}
               error={errors[field.name]}
-              onChange={(e) => onFieldChange?.(field.name, e.target.value, field.type)}
+              onChange={(e) => onFieldChange?.(field.name, e.target.value, field.type || 'text')}
             />
           ))
         )}

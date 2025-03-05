@@ -1,14 +1,15 @@
 "use client"
 
 import { FormToggle } from '@/components/ui/form-toggle'
-import { GuestFormFields } from '@/components/joinguestlist/guest-form-fields'
 import { NotificationPopup } from '@/components/joinguestlist/notification-popup'
+import { StagForm } from '@/components/joinguestlist/stag-form'
+import { CoupleForm } from '@/components/joinguestlist/couple-form'
 import { useState, useEffect, useTransition, useRef, use, useCallback } from 'react'
 import handleGuestlistSubmit from '@/actions/handleGuestlistSubmit';
 import { validateField } from '@/utils/form-validation';
-import { Plus , Trash} from 'lucide-react';
 import fetchEventById from '@/actions/fetchEventById';
 import type { Event } from '@prisma/client';
+import type { Notification } from '@/types/form';
 interface StagGuestlist {
   glId: number;
   guestName: string;
@@ -164,15 +165,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
   // Initialize formType as 'couple' if stagGlCount is 0, otherwise default to 'stag'
   const [formType, setFormType] = useState<'stag' | 'couple'>('stag');
   const [guestCount, setGuestCount] = useState(1);
-  const [notification, setNotification] = useState<{ 
-    message: string; 
-    type: 'success' | 'error';
-    formType?: 'stag' | 'couple';
-    count?: number;
-    eventName?: string;
-    eventDate?: Date;
-    venueName?: string;
-  } | null>(null);
+  const [notification, setNotification] = useState<Notification | null>(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
   const [eventDetails, setEventDetails] = useState<ExtendedEvent | null>(null);
@@ -435,118 +428,27 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                   <input type="hidden" name="guestCount" value={guestCount} />
                   
                   {formType === 'stag' ? (
-                    <div className="space-y-6 max-w-xl mx-auto">
-                      {[...Array(guestCount)].map((_, index) => (
-                        <GuestFormFields
-                          key={index}
-                          index={index}
-                          title="Guest"
-                          fields={stagFields.map(field => ({
-                            ...field,
-                            name: field.name(index),
-                            type: field.type
-                          }))}
-                          errors={formErrors}
-                          onFieldChange={handleFieldChange}
-                          layout="single"
-                        />
-                      ))}
-                      
-                      {/* Guest Controls */}
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                          {guestCount > 1 && (
-                            <button
-                              type="button"
-                              onClick={handleRemoveGuest}
-                              className="flex items-center gap-1 px-3 py-1 text-sm text-red-500/80 hover:text-red-600/80 bg-white/5 rounded-lg transition-colors"
-                            >
-                              <Trash size={16} />
-                              <span className="hidden sm:inline">Remove Guest</span>
-                            </button>
-                          )}
-                          {guestCount < maxGuests && (
-                            <button
-                              type="button"
-                              onClick={handleAddGuest}
-                              className="flex items-center gap-1 px-3 py-1 text-sm text-white/70 hover:text-white bg-white/5 rounded-lg transition-colors"
-                            >
-                              <Plus size={16} />
-                              <span className="hidden sm:inline">Add Guest</span>
-                            </button>
-                          )}
-                        </div>
-                        <span className="text-sm text-white/50">
-                          {guestCount} of {maxGuests} guests
-                        </span>
-                      </div>
-
-                      <div className="flex justify-end pt-4">
-                        <button
-                          type="submit"
-                          disabled={isPending}
-                          className="bg-[#E5FF10] hover:bg-[#E5FF10]/80 text-black font-helvetica  px-6 py-2 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {isPending ? 'Submitting...' : 'Submit'}
-                        </button>
-                      </div>
-                    </div>
+                    <StagForm 
+                      guestCount={guestCount}
+                      maxGuests={maxGuests}
+                      stagFields={stagFields}
+                      formErrors={formErrors}
+                      isPending={isPending}
+                      handleFieldChange={handleFieldChange}
+                      handleAddGuest={handleAddGuest}
+                      handleRemoveGuest={handleRemoveGuest}
+                    />
                   ) : (
-                    <div className="space-y-6">
-                      {[...Array(guestCount)].map((_, index) => (
-                        <GuestFormFields
-                          key={index}
-                          index={index}
-                          title="Couple"
-                          fields={coupleFields.map(field => ({
-                            ...field,
-                            name: field.name(index),
-                            type: field.type
-                          }))}
-                          errors={formErrors}
-                          onFieldChange={handleFieldChange}
-                        />
-                      ))}
-
-                      {/* Couple Controls */}
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                          {guestCount > 1 && (
-                            <button
-                              type="button"
-                              onClick={handleRemoveGuest}
-                              className="flex items-center gap-1 px-3 py-1 text-sm text-red-500/80 hover:text-red-600/80 bg-white/5 rounded-lg transition-colors"
-                            >
-                              <Trash size={16} />
-                              <span className="hidden sm:inline">Remove Couple</span>
-                            </button>
-                          )}
-                          {guestCount < maxGuests && (
-                            <button
-                              type="button"
-                              onClick={handleAddGuest}
-                              className="flex items-center gap-1 px-3 py-1 text-sm text-white/70 hover:text-white bg-white/5 rounded-lg transition-colors"
-                            >
-                              <Plus size={16} />
-                              <span className="hidden sm:inline">Add Couple</span>
-                            </button>
-                          )}
-                        </div>
-                        <span className="text-sm text-white/50">
-                          {guestCount} of {maxGuests} couples
-                        </span>
-                      </div>
-
-                      <div className="flex justify-end pt-4">
-                        <button
-                          type="submit"
-                          disabled={isPending}
-                          className="bg-[#E5FF10] hover:bg-[#E5FF10]/80 text-black font-helvetica px-6 py-2 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {isPending ? 'Submitting...' : 'Submit'}
-                        </button>
-                      </div>
-                    </div>
+                    <CoupleForm 
+                      guestCount={guestCount}
+                      maxGuests={maxGuests}
+                      coupleFields={coupleFields}
+                      formErrors={formErrors}
+                      isPending={isPending}
+                      handleFieldChange={handleFieldChange}
+                      handleAddGuest={handleAddGuest}
+                      handleRemoveGuest={handleRemoveGuest}
+                    />
                   )}
                 </form>
               </div>
