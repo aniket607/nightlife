@@ -9,9 +9,9 @@ import handleGuestlistSubmit from '@/actions/handleGuestlistSubmit';
 import { validateField } from '@/utils/form-validation';
 import fetchEventById from '@/actions/fetchEventById';
 import type { Event } from '@prisma/client';
-import type { Notification } from '@/types/form';
 import type { StagGuestlist, CoupleGuestlist } from '@/types/guestlist';
 import { stagFields, coupleFields } from '@/constants/form-fields';
+import { useErrorHandler } from '@/hooks/useErrorHandler';
 
 interface ExtendedEvent extends Event {
   venue: {
@@ -40,12 +40,23 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
   // Initialize formType as 'couple' if stagGlCount is 0, otherwise default to 'stag'
   const [formType, setFormType] = useState<'stag' | 'couple'>('stag');
   const [guestCount, setGuestCount] = useState(1);
-  const [notification, setNotification] = useState<Notification | null>(null);
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
   const [eventDetails, setEventDetails] = useState<ExtendedEvent | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const formRef = useRef<HTMLFormElement>(null);
+  
+  // Use centralized error handling
+  const { 
+    notification, 
+    formErrors, 
+    showNotification, 
+    clearNotification, 
+    setFieldError,
+    clearFieldError,
+    setMultipleFieldErrors,
+    clearAllFieldErrors,
+    handleApiError 
+  } = useErrorHandler();
 
   // Function to fetch event details
   const fetchEventDetails = useCallback(async () => {
@@ -61,15 +72,12 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
         setFormType('couple');
       }
     } catch (error) {
-      console.error('Error fetching event:', error);
-      setNotification({
-        type: 'error',
-        message: 'Failed to load event details'
-      });
+      // Use centralized error handling
+      handleApiError(error, 'Failed to load event details');
     } finally {
       setIsLoading(false);
     }
-  }, [params.eventId, setFormType, setEventDetails, setNotification, setIsLoading]);
+  }, [params.eventId, setFormType, setEventDetails, handleApiError, setIsLoading]);
 
   useEffect(() => {
     fetchEventDetails();
@@ -106,16 +114,9 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
   const handleFieldChange = (name: string, value: string, type: string, required: boolean = true) => {
     const result = validateField(value, type, required);
     if (!result.isValid) {
-      setFormErrors(prev => ({
-        ...prev,
-        [name]: result.error!
-      }));
+      setFieldError(name, result.error!);
     } else {
-      setFormErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
+      clearFieldError(name);
     }
   };
 
@@ -125,10 +126,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
     if (guestCount < maxGuests && validateSlots(formType, guestCount + 1)) {
       setGuestCount(prev => prev + 1);
     } else {
-      setNotification({
-        type: 'error',
-        message: `No more ${formType} slots available`
-      });
+      showNotification(`No more ${formType} slots available`, 'error');
     }
   };
 
@@ -176,49 +174,46 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
       }
     }
 
-    setFormErrors(errors);
+    // Use centralized error handling
+    setMultipleFieldErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   //Form Submit Handler
   const handleSubmit = async (formData: FormData) => {
     // Reset form errors
-    setFormErrors({});
+    clearAllFieldErrors();
 
     // Validate slots availability
     const submissionCount = parseInt(formData.get('guestCount') as string);
     if (!validateSlots(formType, submissionCount)) {
-      setNotification({
-        message: `Not enough ${formType} slots available`,
-        type: 'error'
-      });
+      showNotification(`Not enough ${formType} slots available`, 'error');
       return;
     }
 
     // Validate form
     if (!validateForm(formData)) {
-      setNotification({
-        message: 'Please fix the errors in the form',
-        type: 'error'
-      });
+      showNotification('Please fix the errors in the form', 'error');
       return;
     }
 
     startTransition(async () => {
       try {
         const response = await handleGuestlistSubmit(formData);
-        setNotification({
-          message: response.message,
-          type: response.success ? 'success' : 'error',
+        
+        // Show success or error notification
+        showNotification(
+          response.message,
+          response.success ? 'success' : 'error',
           // Add additional details for successful submissions
-          ...(response.success && {
+          response.success ? {
             formType,
             count: guestCount,
             eventName: eventDetails?.eventName,
             eventDate: eventDetails?.eventDate,
             venueName: eventDetails?.venue?.venueName
-          })
-        });
+          } : undefined
+        );
 
         if (response.success) {
           // Reset form if submission was successful
@@ -229,10 +224,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
           fetchEventDetails();
         }
       } catch (error) {
-        setNotification({
-          message: 'An error occurred while submitting the form',
-          type: 'error'
-        });
+        handleApiError(error, 'An error occurred while submitting the form');
       }
     });
   };
@@ -256,7 +248,7 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
       {notification && (
         <NotificationPopup 
           notification={notification} 
-          onClose={() => setNotification(null)} 
+          onClose={clearNotification} 
         />
       )}
 
@@ -266,18 +258,12 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
             onToggle={(value) => {
               // Only allow switching to couple if coupleGl is true
               if (value === 'couple' && !eventDetails.coupleGl) {
-                setNotification({
-                  message: 'Couple entries are not available for this event',
-                  type: 'error'
-                });
+                showNotification('Couple entries are not available for this event', 'error');
                 return;
               }
               // Only allow switching to stag if stagGlCount > 0
               if (value === 'stag' && eventDetails.stagGlCount === 0) {
-                setNotification({
-                  message: 'Stag entries are not available for this event',
-                  type: 'error'
-                });
+                showNotification('Stag entries are not available for this event', 'error');
                 return;
               }
               setFormType(value);
