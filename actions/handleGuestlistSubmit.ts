@@ -78,11 +78,49 @@ const createCoupleGuestlist = async (eventId: number, couples: CoupleData[]): Pr
   }
 };
 
+/**
+ * Verify that enough slots are available for the requested submission
+ */
+async function verifySlotAvailability(eventId: number, formType: 'stag' | 'couple', requestedCount: number): Promise<boolean> {
+  try {
+    // Get current event details with fresh slot counts
+    const event = await prisma.event.findUnique({
+      where: { eventId }
+    });
+    
+    if (!event) {
+      console.error('Event not found during slot verification');
+      return false;
+    }
+    
+    if (formType === 'stag') {
+      // Check if enough stag slots are available
+      return event.stagGlCount >= requestedCount;
+    } else {
+      // Check if couple guestlist is enabled and has enough slots
+      return event.coupleGl && (event.coupleGlCount ?? 0) >= requestedCount;
+    }
+  } catch (error) {
+    console.error('Error verifying slot availability:', error);
+    return false;
+  }
+}
+
 export default async function handleGuestlistSubmit(formData: FormData): Promise<SubmissionResponse> {
   try {
     const formType = formData.get('formType') as 'stag' | 'couple'
     const eventId = formData.get('eventId') as string
     const guestCount = parseInt(formData.get('guestCount') as string)
+    
+    // Verify slot availability before proceeding
+    const slotsAvailable = await verifySlotAvailability(parseInt(eventId), formType, guestCount);
+    
+    if (!slotsAvailable) {
+      return {
+        success: false,
+        message: `Sorry, there are not enough ${formType} slots available. Someone may have just taken the last spot.`
+      };
+    }
 
     if (formType === 'stag') {
       const guests: GuestData[] = []

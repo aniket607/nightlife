@@ -222,6 +222,12 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
           
           // Refetch event details to update available slots count
           fetchEventDetails();
+        } else {
+          // If the error was due to slot availability, refresh event details
+          // to show updated slot counts
+          if (response.message.includes('not enough') || response.message.includes('slots available')) {
+            fetchEventDetails();
+          }
         }
       } catch (error) {
         handleApiError(error, 'An error occurred while submitting the form');
