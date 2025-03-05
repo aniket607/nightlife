@@ -161,6 +161,7 @@ interface PageProps {
 
 export default function JoinGuestlistPage({ searchParams }: PageProps) {
   const params = use(searchParams);
+  // Initialize formType as 'couple' if stagGlCount is 0, otherwise default to 'stag'
   const [formType, setFormType] = useState<'stag' | 'couple'>('stag');
   const [guestCount, setGuestCount] = useState(1);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -176,7 +177,13 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
       try {
         setIsLoading(true);
         const event = await fetchEventById(parseInt(params.eventId));
-        setEventDetails(event as ExtendedEvent);
+        const eventData = event as ExtendedEvent;
+        setEventDetails(eventData);
+        
+        // If stagGlCount is 0 and coupleGl is true with available slots, switch to couple form
+        if (eventData.stagGlCount === 0 && eventData.coupleGl && (eventData.coupleGlCount ?? 0) > 0) {
+          setFormType('couple');
+        }
       } catch (error) {
         console.error('Error fetching event:', error);
         setNotification({
@@ -392,11 +399,20 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                 });
                 return;
               }
+              // Only allow switching to stag if stagGlCount > 0
+              if (value === 'stag' && eventDetails.stagGlCount === 0) {
+                setNotification({
+                  message: 'Stag entries are not available for this event',
+                  type: 'error'
+                });
+                return;
+              }
               setFormType(value);
               setGuestCount(1);
             }} 
             className="mb-6"
             disableCouple={!eventDetails.coupleGl}
+            disableStag={eventDetails.stagGlCount === 0}
           />
           
           {/* Form Container */}

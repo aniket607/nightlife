@@ -8,13 +8,16 @@ interface FormToggleProps {
   onToggle: (value: 'stag' | 'couple') => void
   className?: string
   disableCouple?: boolean
+  disableStag?: boolean
 }
 
-export function FormToggle({ onToggle, className, disableCouple = false }: FormToggleProps) {
-  const [selected, setSelected] = useState<'stag' | 'couple'>('stag')
+export function FormToggle({ onToggle, className, disableCouple = false, disableStag = false }: FormToggleProps) {
+  // Initialize with couple if stag is disabled, otherwise default to stag
+  const [selected, setSelected] = useState<'stag' | 'couple'>(disableStag ? 'couple' : 'stag')
 
   const handleToggle = () => {
-    if (selected === 'couple' || !disableCouple) {
+    // Prevent toggle if trying to switch to a disabled option
+    if ((selected === 'couple' && !disableStag) || (selected === 'stag' && !disableCouple)) {
       const newValue = selected === 'stag' ? 'couple' : 'stag';
       setSelected(newValue);
       onToggle(newValue);
@@ -26,7 +29,7 @@ export function FormToggle({ onToggle, className, disableCouple = false }: FormT
       className={cn(
         "flex w-48 h-12 p-1.5 rounded-full cursor-pointer transition-all duration-300 mx-auto",
         "bg-white/10 backdrop-blur-lg border border-white/20 hover:border-white/30",
-        disableCouple && selected === 'stag' && "cursor-not-allowed hover:border-white/20",
+        ((disableCouple && selected === 'stag') || (disableStag && selected === 'couple')) && "cursor-not-allowed hover:border-white/20",
         className
       )}
       onClick={handleToggle}
@@ -48,7 +51,7 @@ export function FormToggle({ onToggle, className, disableCouple = false }: FormT
         <div
           className={cn(
             "flex justify-center items-center gap-2 w-[calc(50%-6px)] h-9 rounded-full transition-colors duration-300 z-10",
-            selected === 'stag' ? "text-black" : "text-white/70"
+            selected === 'stag' ? "text-black" : disableStag ? "text-white/30" : "text-white/70"
           )}
         >
           <User className="w-4 h-4" strokeWidth={1.5} />
