@@ -8,6 +8,7 @@ import { validateField } from '@/utils/form-validation';
 import { Plus, X , Trash} from 'lucide-react';
 import fetchEventById from '@/actions/fetchEventById';
 import type { Event } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
 interface StagGuestlist {
   glId: number;
@@ -161,6 +162,7 @@ interface PageProps {
 
 export default function JoinGuestlistPage({ searchParams }: PageProps) {
   const params = use(searchParams);
+  const router = useRouter();
   // Initialize formType as 'couple' if stagGlCount is 0, otherwise default to 'stag'
   const [formType, setFormType] = useState<'stag' | 'couple'>('stag');
   const [guestCount, setGuestCount] = useState(1);
@@ -457,7 +459,10 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
                 </p>
                 
                 <button
-                  onClick={() => setNotification(null)}
+                  onClick={() => {
+                    setNotification(null);
+                    router.push('/events');
+                  }}
                   className="bg-[#E5FF10] hover:bg-[#E5FF10]/80 text-black font-helvetica px-6 py-2 rounded-xl transition-colors w-full"
                 >
                   Done
