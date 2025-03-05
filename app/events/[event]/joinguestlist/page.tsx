@@ -2,7 +2,7 @@
 
 import { FormToggle } from '@/components/ui/form-toggle'
 import { GuestFormFields } from '@/components/ui/guest-form-fields'
-import { useState, useEffect, useTransition, useRef, use } from 'react'
+import { useState, useEffect, useTransition, useRef, use, useCallback } from 'react'
 import handleGuestlistSubmit from '@/actions/handleGuestlistSubmit';
 import { validateField } from '@/utils/form-validation';
 import { Plus, X , Trash} from 'lucide-react';
@@ -171,32 +171,33 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    const fetchEvent = async () => {
-      if (!params.eventId) return;
-      try {
-        setIsLoading(true);
-        const event = await fetchEventById(parseInt(params.eventId));
-        const eventData = event as ExtendedEvent;
-        setEventDetails(eventData);
-        
-        // If stagGlCount is 0 and coupleGl is true with available slots, switch to couple form
-        if (eventData.stagGlCount === 0 && eventData.coupleGl && (eventData.coupleGlCount ?? 0) > 0) {
-          setFormType('couple');
-        }
-      } catch (error) {
-        console.error('Error fetching event:', error);
-        setNotification({
-          type: 'error',
-          message: 'Failed to load event details'
-        });
-      } finally {
-        setIsLoading(false);
+  // Function to fetch event details
+  const fetchEventDetails = useCallback(async () => {
+    if (!params.eventId) return;
+    try {
+      setIsLoading(true);
+      const event = await fetchEventById(parseInt(params.eventId));
+      const eventData = event as ExtendedEvent;
+      setEventDetails(eventData);
+      
+      // If stagGlCount is 0 and coupleGl is true with available slots, switch to couple form
+      if (eventData.stagGlCount === 0 && eventData.coupleGl && (eventData.coupleGlCount ?? 0) > 0) {
+        setFormType('couple');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching event:', error);
+      setNotification({
+        type: 'error',
+        message: 'Failed to load event details'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [params.eventId, setFormType, setEventDetails, setNotification, setIsLoading]);
 
-    fetchEvent();
-  }, [params.eventId]);
+  useEffect(() => {
+    fetchEventDetails();
+  }, [fetchEventDetails]);
 
   if (isLoading) {
     return (
@@ -339,6 +340,9 @@ export default function JoinGuestlistPage({ searchParams }: PageProps) {
           // Reset form if submission was successful
           setGuestCount(1);
           formRef.current?.reset();
+          
+          // Refetch event details to update available slots count
+          fetchEventDetails();
         }
       } catch (error) {
         setNotification({
